@@ -134,7 +134,7 @@ var Q = window.Q = Quintus()
 		Q.compileSheets("mario_small.png","mario_small.json");
 		Q.compileSheets("goomba.png","goomba.json");
 
-		Q.animations("mario_anim", {
+	Q.animations("mario_anim", {
 		walk_right: { frames: [1,2,3], rate: 1/6, next: "parado_r"},
 		walk_left: { frames: [15,16,17], rate: 1/6, next: "parado_l"},
 		jump_right: { frames: [4], rate: 1/6, next: "parado_r" },
@@ -144,7 +144,7 @@ var Q = window.Q = Quintus()
 		parado_r: { frames: [0]},
 		parado_l: { frames: [14]},
 		morir: { frames: [12], loop: false, rate: 1}
-		});
+	});
 
 		Q.scene("level1", function (stage){
 			/*
@@ -169,10 +169,20 @@ var Q = window.Q = Quintus()
 
 			Q.state.reset({lives:2});
 
-			Q.audio.play("music_main.mp3");
+			Q.audio.play("music_main.mp3", {loop: true});
 		});
 
-		Q.stageScene("level1");
+		Q.scene("hud", function(stage){
+			label_lives = new Q.UI.Text({x:50, y:0, label: "lives:2"});
+			stage.insert(label_lives);
+			Q.state.on("change.lives",this,function(){
+				label_lives.p.label = "lives: " + Q.state.get("lives");
+			});
+		});
+
+		Q.stageScene("level1",1); //va a la capa del fondo
+		Q.stageScene("hud",2);
+
 	});
 
 }
