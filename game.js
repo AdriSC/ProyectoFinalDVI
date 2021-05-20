@@ -4,7 +4,7 @@ var game = function() {
 // the Sprites, Scenes, Input and 2D module. The 2D module
 // includes the `TileLayer` class as well as the `2d` component.
 var Q = window.Q = Quintus()
-	       .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX")
+	       .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
 	       // Maximize this game to whatever the size of the browser is
 	       .setup('myGame',
 	       {
@@ -13,7 +13,7 @@ var Q = window.Q = Quintus()
 	       	scaleToFit : true //Scale the game to fit the screen of the player´s device
 	       })
 	       // And turn on default input controls and touch input (for UI)
-	       .controls()
+	       .controls().enableSound()
 	       .touch();
 
 	Q.Sprite.extend("Mario",{
@@ -127,7 +127,8 @@ var Q = window.Q = Quintus()
 
 
 
-	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx", "tiles.png", "goomba.png", "goomba.json" ],  function() {
+	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx",
+		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3" ],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -167,6 +168,8 @@ var Q = window.Q = Quintus()
 			stage.insert(new Q.Goomba());
 
 			Q.state.reset({lives:2});
+
+			Q.audio.play("music_main.mp3");
 		});
 
 		Q.stageScene("level1");
