@@ -142,8 +142,8 @@ var Q = window.Q = Quintus()
 
 	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx",
 		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
-		    "title-screen.png", "kill_enemy.mp3", "jump_small.mp3",
-		    "coin.mp3" ],  function() {
+		    "kill_enemy.mp3", "jump_small.mp3",
+		    "coin.mp3", "portada.png" ],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -201,7 +201,7 @@ var Q = window.Q = Quintus()
 			var button = new Q.UI.Button({
 				x: Q.width/2,
 				y: Q.height/2,
-				asset: "title-screen.png"
+				asset: "portada.png"
 			});
 			button.on("click", function () {
 				Q.clearStages();
@@ -234,7 +234,7 @@ var Q = window.Q = Quintus()
 			Q.audio.stop();
 		});
 
-		Q.debug = true;
+		//Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
