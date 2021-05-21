@@ -1,21 +1,27 @@
 var game = function() {
 
-// Set up an instance of the Quintus engine  and include
-// the Sprites, Scenes, Input and 2D module. The 2D module
-// includes the `TileLayer` class as well as the `2d` component.
 var Q = window.Q = Quintus()
 	       .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
-	       // Maximize this game to whatever the size of the browser is
+
 	       .setup('myGame',
 	       {
 	       	width: 800,
 	       	height: 600,
 	       	scaleToFit : true //Scale the game to fit the screen of the player´s device
 	       })
-	       // And turn on default input controls and touch input (for UI)
 	       .controls().enableSound()
 	       .touch();
 
+	Q.component("dancer", {
+		extend: {
+			dance: function(){
+				this.p.angle = 0;
+				this.animate({angle: 360}, 0.5, Q.Easing.Quadratic.In);
+			}
+		}
+	});       
+
+	//Sprite personaje principal
 	Q.Sprite.extend("Mario",{
 			init: function(p) {
 				this._super(p, {
@@ -26,9 +32,14 @@ var Q = window.Q = Quintus()
 					 frame: 0,
 					 scale: 1
 				 });
-				//el 2d es para darle gravedad y que este sobre el mapa y choque correctamente con la plataforma, no flotando
-				//el platf...para darle controles de juego, arriba, abajo, der, izq
-				this.add("2d, platformerControls, animation"); //componentes
+				//el 2d es para darle gravedad, que este sobre el mapa y choque correctamente con la plataforma, no flotando
+				//el platf para darle controles de juego, arriba, abajo, der, izq
+				this.add("2d, platformerControls, animation, tween, dancer"); //componentes
+				Q.input.on("up", this, function(){ 
+					if(this.p.vy == 0) // para que el audio del salto vaya correctamente
+					Q.audio.play("jump_small.mp3");
+				});
+				Q.input.on("fire", this, "dance");
 			},
 			step: function(dt){
 				if(this.p.vx > 0){
@@ -52,11 +63,19 @@ var Q = window.Q = Quintus()
 						this.play("fall_left");
 					}
 				}
+			},
+			die: function(){
+				Q.state.dec("lives", 1);
+				console.log(Q.state.get("lives"));
+				if(Q.state.get("lives") < 0){
+					this.destroy();
+					Q.stageScene("endGame", 2);
+				}
 			}
 
 		});
 
-
+	//Sprite de la seta
 	Q.Sprite.extend("OneUp",{
 			init: function(p) {
 				this._super(p, {
@@ -84,12 +103,11 @@ var Q = window.Q = Quintus()
 							  Q.Easing.Quadratic.Out, //podemos probar animaciones diferntes In, InOut
 							  {callback: function(){this.destroy()}});
 				//this.destroy();
+				Q.audio.play("coin.mp3");
 			}
 		});
 
-
 	// Sprite del enemigo
-	// Create the Enemy class to add in some baddies
 	Q.Sprite.extend("Goomba",{
 		init: function(p) {
 			this._super(p, {
@@ -100,9 +118,7 @@ var Q = window.Q = Quintus()
 				 vx: 100
 			 });
 
-			// Enemies use the Bounce AI to change direction
-			// whenver they run into something.
-			this.add('2d, aiBounce, animation');
+			this.add('2d, aiBounce, animation'); //componentes
 			this.on("bump.top", this, "onTop");
 			this.on("bump.left,bump.right,bump.bottom",this, "kill");
 		},
@@ -111,24 +127,22 @@ var Q = window.Q = Quintus()
 			collision.obj.p.vy = -200;
 			console.log("Goomba dies");
 			this.destroy();
+			Q.audio.play("kill_enemy.mp3");
 		},
 		kill: function(collision){
 			if(!collision.obj.isA("Mario")) return;
 			collision.obj.p.vy = -200;
 			collision.obj.p.vx = collision.normalX *-500;
 			collision.obj.p.x += collision.normalX *-5;
-			Q.state.dec("lives", 1);
-			console.log(Q.state.get("lives"));
-			if(Q.state.get("lives")<0)
-					collision.obj.destroy();
+			collision.obj.die();
 		}
-		
 	});
 
 
-
 	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx",
-		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3" ],  function() {
+		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
+		    "title-screen.png", "kill_enemy.mp3", "jump_small.mp3",
+		    "coin.mp3" ],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -172,6 +186,7 @@ var Q = window.Q = Quintus()
 			Q.audio.play("music_main.mp3", {loop: true});
 		});
 
+		//HUD de vidas
 		Q.scene("hud", function(stage){
 			label_lives = new Q.UI.Text({x:50, y:0, label: "lives:2"});
 			stage.insert(label_lives);
@@ -180,8 +195,45 @@ var Q = window.Q = Quintus()
 			});
 		});
 
-		Q.stageScene("level1",1); //va a la capa del fondo
-		Q.stageScene("hud",2);
+		//Pantalla principal
+		Q.scene("mainTitle", function(stage){
+			var button = new Q.UI.Button({
+				x: Q.width/2,
+				y: Q.height/2,
+				asset: "title-screen.png"
+			});
+			button.on("click", function () {
+				Q.clearStages();
+				Q.stageScene("level1", 1); //va a la capa del fondo
+				Q.stageScene("hud", 2);
+			});
+			stage.insert(button);
+		});
+
+		//Pantalla final
+		Q.scene('endGame', function(stage) {
+			var container = stage.insert(new Q.UI.Container({
+				x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+			}));
+
+			var button2 = container.insert(new Q.UI.Button({
+				x: 0, y: 0, fill: "#CCCCCC", label: "Play Again"
+			}));
+
+			var label = container.insert(new Q.UI.Text({
+				x:10, y: -10 - button2.p.h, label: "You lose!"
+			}));
+
+			button2.on("click",function() {
+				Q.clearStages();
+				Q.stageScene('mainTitle');
+			});
+
+			container.fit(20);
+			Q.audio.stop();
+		});
+
+		Q.stageScene("mainTitle");
 
 	});
 
