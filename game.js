@@ -30,7 +30,8 @@ var Q = window.Q = Quintus()
 					 x: 250,
 					 y: 250,
 					 frame: 0,
-					 scale: 1
+					 scale: 1,
+					 gravity: .75
 				 });
 				//el 2d es para darle gravedad, que este sobre el mapa y choque correctamente con la plataforma, no flotando
 				//el platf para darle controles de juego, arriba, abajo, der, izq
@@ -221,7 +222,7 @@ var Q = window.Q = Quintus()
 			}));
 
 			var label = container.insert(new Q.UI.Text({
-				x:10, y: -10 - button2.p.h, label: "You lose!"
+				x:10, y: -10 - button2.p.h, label: "You lose"
 			}));
 
 			button2.on("click",function() {
@@ -233,6 +234,7 @@ var Q = window.Q = Quintus()
 			Q.audio.stop();
 		});
 
+		Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
