@@ -145,7 +145,7 @@ var Q = window.Q = Quintus()
 		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
 		    "kill_enemy.mp3", "jump_small.mp3",
 		    "coin.mp3", "portada.png", 
-		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3"],  function() {
+		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -175,7 +175,7 @@ var Q = window.Q = Quintus()
 			stage.insert(mario);
 			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
 
-			stage.add("viewport").follow(mario,{x: true, y: false}); //la camara sigue a mario centrado en el eje horizontal, en el vertical esta a false
+			stage.add("viewport").follow(mario,{x: true, y: true}); //la camara sigue a mario centrado en el eje horizontal, en el vertical esta a false
 			stage.viewport.scale = .75; //para acercar mas o menos la camara
 			stage.viewport.offsetX = -200; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
@@ -186,7 +186,7 @@ var Q = window.Q = Quintus()
 
 			Q.state.reset({lives:2});
 
-			Q.audio.play("music_main.mp3", {loop: true});
+			Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
 
 		//HUD de vidas
@@ -207,10 +207,12 @@ var Q = window.Q = Quintus()
 			});
 			button.on("click", function () {
 				Q.clearStages();
+				Q.audio.stop();
 				Q.stageScene("level1", 1); //va a la capa del fondo
 				Q.stageScene("hud", 2);
 			});
 			stage.insert(button);
+			Q.audio.play("WorldMapTheme.mp3", {loop: true});
 		});
 
 		//Pantalla final
