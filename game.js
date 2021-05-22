@@ -144,7 +144,7 @@ var Q = window.Q = Quintus()
 		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
 		    "kill_enemy.mp3", "jump_small.mp3",
 		    "coin.mp3", "portada.png", 
-		    "level_1.tmx","foresttiles01.png", "bg_base.png"],  function() {
+		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
