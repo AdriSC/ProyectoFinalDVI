@@ -702,6 +702,9 @@
   </data>
  </layer>
  <layer id="4" name="Capa de patrones 2" width="32" height="21">
+  <properties>
+   <property name="collision" value="false"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
