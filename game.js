@@ -143,7 +143,7 @@ var Q = window.Q = Quintus()
 	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx",
 		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
 		    "kill_enemy.mp3", "jump_small.mp3",
-		    "coin.mp3", "portada.png" ],  function() {
+		    "coin.mp3", "portada.png", "level_1.tmx"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -167,7 +167,7 @@ var Q = window.Q = Quintus()
 				new Q.Repeater({asset: "bg.png", speedX: 0.5, speedY: 0.5}) //para repetir el fondo
 			);
 			*/
-			Q.stageTMX("mapa2021.tmx", stage);
+			Q.stageTMX("level_1.tmx", stage);
 	
 			mario = new Q.Mario();
 			stage.insert(mario);
