@@ -27,11 +27,11 @@ var Q = window.Q = Quintus()
 				this._super(p, {
 					 sheet: "mario",
 					 sprite: "mario_anim",
-					 x: 250,
-					 y: 250,
+					 x: 150,
+					 y: 950,
 					 frame: 0,
 					 scale: 1,
-					 gravity: .3
+					 gravity: .45
 
 				 });
 				//el 2d es para darle gravedad, que este sobre el mapa y choque correctamente con la plataforma, no flotando
@@ -230,10 +230,9 @@ var Q = window.Q = Quintus()
 			mario = new Q.Mario();
 			stage.insert(mario);
 			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
-
-			stage.add("viewport").follow(mario,{x: true, y: true}); //la camara sigue a mario centrado en el eje horizontal, en el vertical esta a false
-			stage.viewport.scale = .75; //para acercar mas o menos la camara
-			stage.viewport.offsetX = -200; //para colocar a mario mas a la izquierda del centro
+			stage.add("viewport").follow(mario,{x: true, y: true},{minX:0, maxX: 1920, minY: 0, maxY: 1250}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
+			stage.viewport.scale = 1; //para acercar mas o menos la camara
+			stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				mario.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
 			});
