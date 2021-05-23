@@ -162,6 +162,7 @@ var Q = window.Q = Quintus()
 					 y: -10,
 					 sensor: true
 				 });
+			}
 		});
 
 	Q.Sprite.extend("ModTilesDark",{
@@ -175,6 +176,7 @@ var Q = window.Q = Quintus()
 					 y: -10,
 					 sensor: true
 				 });
+			}
 		});
 
 	Q.Sprite.extend("ModTiles",{
@@ -182,7 +184,7 @@ var Q = window.Q = Quintus()
 				this._super(p, {
 					 sheet: "modTileslight",
 					 frame: 55,
-					 scale: 1,
+					 scale: 1
 				 });
 			}
 		});
@@ -193,7 +195,7 @@ var Q = window.Q = Quintus()
 		    "coin.mp3", "portada.png", 
 		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3",
 		    "lvl_1.tmx","foresttiles01Fix.png", "modTiles1.json", "modTiles2.json","forestall.png",
-		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png", "Whip03.mp3"],  function() {
+		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png", "Whip03.mp3", "forestsetObj.png", "utilities.png"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
