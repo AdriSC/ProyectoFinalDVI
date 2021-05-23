@@ -141,16 +141,70 @@ var Q = window.Q = Quintus()
 	});
 
 
+	Q.Sprite.extend("Goal",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "utilities",
+				 frame: 55,
+				 scale: 1
+			 });
+		}
+	});
+
+	Q.Sprite.extend("ModTilesObj",{
+			init: function(p) {
+				
+				this._super(p, {
+					 sheet: "modTilesObj",
+					 frame: 55,
+					 scale: 1,
+					 x: 20, //respecto a mario
+					 y: -10,
+					 sensor: true
+				 });
+		});
+
+	Q.Sprite.extend("ModTilesDark",{
+			init: function(p) {
+				
+				this._super(p, {
+					 sheet: "modTilesdark",
+					 frame: 55,
+					 scale: 1,
+					 x: 20, //respecto a mario
+					 y: -10,
+					 sensor: true
+				 });
+		});
+
+	Q.Sprite.extend("ModTiles",{
+			init: function(p) {
+				this._super(p, {
+					 sheet: "modTileslight",
+					 frame: 55,
+					 scale: 1,
+				 });
+			}
+		});
+
 	Q.load(["mario_small.png", "mario_small.json", "1up.png", "bg.png", "mapa2021.tmx",
 		    "tiles.png", "goomba.png", "goomba.json", "music_main.mp3",
 		    "kill_enemy.mp3", "jump_small.mp3",
 		    "coin.mp3", "portada.png", 
-		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3"],  function() {
+		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3",
+		    "lvl_1.tmx","foresttiles01Fix.png", "modTiles1.json", "modTiles2.json","forestall.png",
+		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
 		Q.compileSheets("goomba.png","goomba.json");
+		Q.compileSheets("utilities.png","saw.json");
+		Q.compileSheets("foresttiles01bg.png","modTiles1.json");
+		Q.compileSheets("foresttiles01Fix.png","modTiles2.json");
+		Q.compileSheets("forestsetObj.png","modTilesObj.json");
+		Q.compileSheets("utilities.png","utilities.json");
 
+		
 	Q.animations("mario_anim", {
 		walk_right: { frames: [1,2,3], rate: 1/6, next: "parado_r"},
 		walk_left: { frames: [15,16,17], rate: 1/6, next: "parado_l"},
@@ -169,7 +223,7 @@ var Q = window.Q = Quintus()
 				new Q.Repeater({asset: "bg.png", speedX: 0.5, speedY: 0.5}) //para repetir el fondo
 			);
 			*/
-			Q.stageTMX("level_1.tmx", stage);
+			Q.stageTMX("lvl_1.tmx", stage);
 	
 			mario = new Q.Mario();
 			stage.insert(mario);
