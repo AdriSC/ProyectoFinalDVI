@@ -193,7 +193,7 @@ var Q = window.Q = Quintus()
 		    "coin.mp3", "portada.png", 
 		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3",
 		    "lvl_1.tmx","foresttiles01Fix.png", "modTiles1.json", "modTiles2.json","forestall.png",
-		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png"],  function() {
+		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png", "Whip03.mp3"],  function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("mario_small.png","mario_small.json");
@@ -259,13 +259,22 @@ var Q = window.Q = Quintus()
 				y: Q.height/2,
 				asset: "portada.png"
 			});
+			button.p.opacity = 0;
+			button.add("tween");
 			button.on("click", function () {
-				Q.clearStages();
-				Q.audio.stop();
-				Q.stageScene("level1", 1); //va a la capa del fondo
-				Q.stageScene("hud", 2);
+				Q.audio.play("Whip03.mp3");
+				button
+					 .animate({ x: 400, y: 300, scale: 4, opacity: 0 }, .9, Q.Easing.Quadratic.In,
+					 		  {callback: function(){
+					 		  				Q.clearStages();
+					 		  				Q.audio.stop();
+					 		  				Q.stageScene("level1", 1); //va a la capa del fondo
+					 		  				Q.stageScene("hud", 2);}})
 			});
 			stage.insert(button);
+			button
+		        .animate({ x: 400, y:  300, opacity:1 }, .5, Q.Easing.Quadratic.InOut)
+		        .chain({ angle: 360}, .3)
 			Q.audio.play("WorldMapTheme.mp3", {loop: true});
 		});
 
