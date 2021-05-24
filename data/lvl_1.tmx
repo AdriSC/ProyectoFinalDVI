@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="21" tilewidth="60" tileheight="60" infinite="0" nextlayerid="18" nextobjectid="58">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="21" tilewidth="60" tileheight="60" infinite="0" nextlayerid="20" nextobjectid="79">
  <tileset firstgid="1" name="foresttiles01Fix" tilewidth="60" tileheight="60" tilecount="100" columns="10">
   <image source="../images/foresttiles01Fix.png" width="600" height="600"/>
  </tileset>
@@ -663,8 +663,163 @@
  </tileset>
  <imagelayer id="16" name="background">
   <image source="../images/bg_base.png" width="2000" height="1500"/>
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
  </imagelayer>
+ <objectgroup id="18" name="fixfondo">
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
+  <object id="58" gid="513" x="629.5" y="808.75" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="59" gid="513" x="596.125" y="900.625" width="60" height="60">
+   <properties>
+    <property name="frame" value="12"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="60" gid="513" x="570" y="990" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="61" gid="513" x="270.091" y="1170.09" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="62" gid="513" x="210.091" y="1110.09" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="63" gid="513" x="90" y="990.125" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="64" gid="513" x="1050" y="870" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="65" gid="513" x="1140" y="896.25" width="60" height="60">
+   <properties>
+    <property name="frame" value="12"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="66" gid="513" x="1170.25" y="1110.25" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="67" gid="513" x="1650.25" y="810" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="68" gid="513" x="1709.75" y="450.25" width="60" height="60"/>
+  <object id="69" gid="513" x="1770.25" y="390.5" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="70" gid="513" x="750.333" y="570.333" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="72" gid="513" x="780.333" y="535.667" width="60" height="60">
+   <properties>
+    <property name="frame" value="12"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="73" gid="513" x="870" y="511" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+  <object id="74" gid="513" x="930" y="570" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
+ </objectgroup>
+ <objectgroup id="19" name="fixfondo2">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
+  <object id="75" gid="413" x="630" y="690.667" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+   </properties>
+  </object>
+  <object id="76" gid="413" x="1050" y="690.667" width="60" height="60">
+   <properties>
+    <property name="angle" value="45"/>
+    <property name="frame" value="12"/>
+    <property name="scale" value="1.37"/>
+   </properties>
+  </object>
+  <object id="77" gid="413" x="1375.18" y="900" width="60" height="60">
+   <properties>
+    <property name="frame" value="12"/>
+   </properties>
+  </object>
+  <object id="78" gid="413" x="1380.18" y="895" width="60" height="60">
+   <properties>
+    <property name="frame" value="12"/>
+   </properties>
+  </object>
+ </objectgroup>
  <layer id="12" name="fondo2" width="32" height="21">
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -1100,7 +1255,7 @@
    <tile gid="113"/>
    <tile gid="113"/>
    <tile gid="113"/>
-   <tile gid="155"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -1148,7 +1303,7 @@
    <tile/>
    <tile/>
    <tile/>
-   <tile gid="155"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -1214,31 +1369,6 @@
    <tile/>
    <tile gid="113"/>
    <tile gid="113"/>
-   <tile gid="155"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="113"/>
-   <tile gid="155"/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
-   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -1247,7 +1377,32 @@
    <tile gid="113"/>
    <tile gid="113"/>
    <tile gid="113"/>
-   <tile gid="155"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile gid="113"/>
+   <tile/>
    <tile/>
    <tile/>
    <tile/>
@@ -1342,7 +1497,7 @@
  </layer>
  <layer id="7" name="fondo1" width="32" height="21">
   <properties>
-   <property name="sensor" value="false"/>
+   <property name="type" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -2020,6 +2175,9 @@
   </data>
  </layer>
  <objectgroup id="8" name="angleTiles">
+  <properties>
+   <property name="collision" value="true"/>
+  </properties>
   <object id="7" gid="403" x="420" y="1080" width="60" height="60">
    <properties>
     <property name="angle" value="45"/>
@@ -2065,50 +2223,54 @@
  </objectgroup>
  <objectgroup id="13" name="angleTilesDark">
   <properties>
-   <property name="sensor" value="false"/>
+   <property name="type" value="0"/>
   </properties>
   <object id="16" gid="513" x="1590" y="870" width="60" height="60">
    <properties>
     <property name="angle" value="45"/>
-    <property name="collision" value="true"/>
     <property name="frame" value="12"/>
     <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="17" gid="513" x="151.333" y="1050" width="60" height="60">
    <properties>
     <property name="angle" value="45"/>
-    <property name="collision" value="true"/>
     <property name="frame" value="12"/>
     <property name="scale" value="1.37"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
  </objectgroup>
  <objectgroup id="14" name="scene">
   <properties>
-   <property name="sensor" value="false"/>
+   <property name="type" value="0"/>
   </properties>
   <object id="18" gid="601" x="522" y="472" width="100" height="200">
    <properties>
     <property name="frame" value="0"/>
     <property name="scale" value="2"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="19" gid="601" x="580" y="546" width="100" height="200">
    <properties>
     <property name="frame" value="0"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="20" gid="607" x="40" y="252" width="100" height="200">
    <properties>
     <property name="frame" value="6"/>
     <property name="scale" value="0.5"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="21" gid="607" x="1758" y="150" width="100" height="200">
    <properties>
     <property name="frame" value="6"/>
     <property name="scale" value="0.5"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="22" gid="612" x="982" y="622" width="100" height="200">
@@ -2116,6 +2278,7 @@
     <property name="angle" value="90"/>
     <property name="frame" value="11"/>
     <property name="scale" value="1.6"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="24" gid="612" x="1638" y="1158" width="100" height="200">
@@ -2123,42 +2286,50 @@
     <property name="angle" value="90"/>
     <property name="frame" value="11"/>
     <property name="scale" value="1"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="27" gid="603" x="908" y="542" width="100" height="200">
    <properties>
     <property name="frame" value="2"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="28" gid="604" x="150" y="1160" width="100" height="200">
    <properties>
     <property name="frame" value="3"/>
     <property name="scale" value="0.8"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="29" gid="621" x="104" y="1152" width="100" height="200">
    <properties>
     <property name="frame" value="20"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="30" gid="632" x="132" y="1150" width="100" height="200">
    <properties>
     <property name="frame" value="31"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="31" gid="632" x="864" y="552" width="100" height="200">
    <properties>
     <property name="frame" value="31"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="33" gid="632" x="608" y="552" width="100" height="200">
    <properties>
     <property name="frame" value="31"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="34" gid="632" x="892" y="1090" width="100" height="200">
    <properties>
     <property name="frame" value="31"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="35" gid="632" x="1480" y="680" width="100" height="200">
@@ -2848,6 +3019,9 @@
   </data>
  </layer>
  <layer id="10" name="decorado" width="32" height="21">
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -3524,6 +3698,9 @@
   </data>
  </layer>
  <layer id="11" name="decorado1" width="32" height="21">
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
   <data>
    <tile/>
    <tile/>
@@ -4200,6 +4377,9 @@
   </data>
  </layer>
  <objectgroup id="15" name="front">
+  <properties>
+   <property name="type" value="0"/>
+  </properties>
   <object id="36" gid="622" x="56" y="636" width="100" height="200">
    <properties>
     <property name="angle" value="180"/>
@@ -4218,10 +4398,15 @@
     <property name="frame" value="11"/>
    </properties>
   </object>
-  <object id="41" gid="623" x="446" y="1220" width="100" height="200"/>
+  <object id="41" gid="623" x="446" y="1220" width="100" height="200">
+   <properties>
+    <property name="type" value="0"/>
+   </properties>
+  </object>
   <object id="42" gid="623" x="434" y="1222" width="100" height="200">
    <properties>
     <property name="scale" value="0.3"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="43" gid="622" x="-44" y="1328" width="100" height="200">
@@ -4233,6 +4418,7 @@
   <object id="44" gid="622" x="870" y="1342" width="100" height="200">
    <properties>
     <property name="scale" value="3"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="45" gid="611" x="1848" y="1340" width="100" height="200">
@@ -4271,9 +4457,13 @@
   </object>
  </objectgroup>
  <objectgroup id="17" name="goal">
-  <object id="46" gid="651" x="996.389" y="1079.97" width="100" height="100">
+  <properties>
+   <property name="sensor" value="true"/>
+  </properties>
+  <object id="46" gid="651" x="702" y="558" width="100" height="100">
    <properties>
     <property name="frame" value="0"/>
+    <property name="level" value="level2"/>
     <property name="scale" value="0.6"/>
    </properties>
   </object>
