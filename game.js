@@ -31,7 +31,7 @@ var Q = window.Q = Quintus()
                 speed: 50,
                 frame: 0,
                 scale: 1,
-				gravity: .2
+				gravity: .1
             });
             this.add("2d, platformerControls, animation");
         },
@@ -74,11 +74,10 @@ var Q = window.Q = Quintus()
 			}
 
         },
-
         
 		die: function(){
 			this.destroy();
-			Q.stageScene("endGame", 2);
+			Q.stageScene(Q.stage(1).scene.name, 1);
         }
     });
 
@@ -171,7 +170,7 @@ var Q = window.Q = Quintus()
 		},
 
 		kill: function(collision){
-				if(!collision.isA("Mario")) return;
+				if(!collision.isA("SuperMeatBoy")) return;
 				collision.die();
 				//collision.obj.destroy();
 
@@ -195,15 +194,21 @@ var Q = window.Q = Quintus()
 				 sensor: true
 			 });
 			this.on('sensor', this, 'hit');
+			this.p.level;
 		},
 		hit: function(collision){
 			if(!collision.isA("SuperMeatBoy")) return;
 				
 			collision.p.vy = -40;
 
-			Q.audio.play("coin.mp3");
+			//Q.audio.play("coin.mp3");
 			this.destroy();
-			Q.stageScene("level2", 1);
+			//if(Q.stage(1).scene.name == "level2"){
+				//Q.stageScene("endGame", 1);
+				//return;
+			//}
+			Q.audio.stop();
+			Q.stageScene(this.p.level, 1);
 		}
 	});
 
@@ -251,7 +256,7 @@ var Q = window.Q = Quintus()
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", //music
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
-		    "forestsetObj.png", "utilities.png",
+		    "forestsetObj.png", "utilities.png", "end.png",
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
@@ -284,7 +289,7 @@ var Q = window.Q = Quintus()
 			Q.stageTMX("lvl_1.tmx", stage);
 		
 			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
-			stage.insert(smb);;
+			stage.insert(smb);
 			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
 			stage.viewport.scale = .96; //para acercar mas o menos la camara
@@ -351,16 +356,20 @@ var Q = window.Q = Quintus()
 
 		//Pantalla final
 		Q.scene('endGame', function(stage) {
+
+			var sprite = new Q.Sprite({ asset: "end.png", x: 400, y: 300, scale: 1 });
+      		stage.insert(sprite);
+
 			var container = stage.insert(new Q.UI.Container({
 				x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
 			}));
 
 			var button2 = container.insert(new Q.UI.Button({
 				x: 0, y: 0, fill: "#CCCCCC", label: "Play Again"
-			}));
+			}), container);
 
 			var label = container.insert(new Q.UI.Text({
-				x:10, y: -10 - button2.p.h, label: "You lose"
+				x:10, y: -10 - button2.p.h, label: "You win"
 			}));
 
 			button2.on("click",function() {
