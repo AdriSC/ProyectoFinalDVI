@@ -77,6 +77,7 @@ var Q = window.Q = Quintus()
         
 		die: function(){
 			this.destroy();
+			Q.audio.stop();
 			Q.stageScene(Q.stage(1).scene.name, 1);
         }
     });
