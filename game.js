@@ -147,7 +147,44 @@ var Q = window.Q = Quintus()
 		}
 	});*/
 
+	Q.Sprite.extend("Saw",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "utilities",
+				 frame: 55,
+				 scale: 1,
+				 sensor: true,
+			});
+			this.p.points = [];
+			
+			//points in a circle from 0 to 15, where x: 2r / (nump / 2) and y: sqrt( sqr(r) - sqr(x)), this solve the first half, negative values on an inverse order for the second half
+			for(var i = 0; i < 16; i++) {
+		        if(i<8) this.p.points.push([((100/8)*i)-50, Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*i)-50),2))]);
+		    	if(i>=8) this.p.points.push([((100/8)*(i-(2*(i-8))))-50, (-1)*Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*(i-(2*(i-8))))-50),2))]);
+		    }
 
+			//this.add("tween");
+			//this.anim();
+			this.on("sensor", this, "kill");		//this.on ("collision", this, "kill")
+		},
+
+		step: function(dt){
+			this.p.angle += 200 * dt;
+		},
+
+		kill: function(collision){
+				if(!collision.isA("Mario")) return;
+				collision.die();
+				//collision.obj.destroy();
+
+				/*
+					this.animate({y: this.p.y-100, angle: 360},
+					1,
+					Q.Easing.Quadratic.InOut,
+					{callback: function(){this.destroy()}});
+				*/
+		}
+	});
 	Q.Sprite.extend("Goal",{
 		init: function(p){
 			this._super(p, {
@@ -206,7 +243,7 @@ var Q = window.Q = Quintus()
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
-		Q.compileSheets("utilities.png","saw.json");
+		//Q.compileSheets("utilities.png","saw.json");
 		Q.compileSheets("foresttiles01bg.png","modTiles1.json");
 		Q.compileSheets("foresttiles01Fix.png","modTiles2.json");
 		Q.compileSheets("forestsetObj.png","modTilesObj.json");
