@@ -28,13 +28,43 @@ var Q = window.Q = Quintus()
             this._super(p, {
                 sheet: "smb",
                 sprite: "smb_anim",
-                speed: 50,
+                speed: 20,
+                x: 250,
+                y: 250,
                 frame: 0,
                 scale: 1,
-				gravity: .1
+				gravity: .3
             });
-            this.add("2d, platformerControls, animation");
+            this.add("2d, platformerControls, aiBounce, animation");
+			this.on("bump.left, bump.right", this, "stick_on_wall");
+			this.on("jump");
+    		this.on("jumped");
+			
         },
+
+		stick_on_wall: function(collision){
+			
+			if(collision.obj.isA("Goal")) return;
+			if(collision.normalX == 1 && collision.normalY == 0){
+				this.p.landed = true;
+				this.play("wall_left");
+			}
+			if(collision.normalX == -1 && collision.normalY == 0){
+				this.p.landed = true;
+				this.play("wall_right");
+			}
+		},
+
+		jump: function(obj) {
+			if (!obj.p.playedJump) {
+			  Q.audio.play("Meat_jumps0.mp3");
+			  obj.p.playedJump = true;
+			}
+		},
+		
+		jumped: function(obj) {
+			obj.p.playedJump = false;
+		},
 
         step: function(dt){
 			
@@ -42,7 +72,7 @@ var Q = window.Q = Quintus()
                 this.play("walk_left");
                 //aceleración izq
                 if(this.p.speed < 500){
-                    this.p.speed += 3;
+                    this.p.speed += 200*dt;
                 }
                 
             }
@@ -51,15 +81,11 @@ var Q = window.Q = Quintus()
                 this.play("walk_right");
                 //aceleración dcha
                 if(this.p.speed < 500){
-                    this.p.speed += 3;
+                    this.p.speed += 200*dt;
                 }
                 
             }
 
-			if(Q.inputs['up']){
-				//TODO -- Muros
-				
-			}
 			if(this.p.vx == 0 && this.p.vy == 0){
 				this.play("stand_right");
 				this.p.speed = 50;
@@ -74,11 +100,10 @@ var Q = window.Q = Quintus()
 			}
 
         },
-        
+
 		die: function(){
+			this.play("death");
 			this.destroy();
-			Q.audio.stop();
-			Q.stageScene(Q.stage(1).scene.name, 1);
         }
     });
 
@@ -255,6 +280,7 @@ var Q = window.Q = Quintus()
 		    "tiles.png", "music_main.mp3", "kill_enemy.mp3", "jump_small.mp3","coin.mp3", "goomba.png", "goomba.json", "mario_small.png", "mario_small.json",
 		    "level_1.tmx", "lvl_1.tmx", "lvl_2.tmx", //tmx
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", //music
+			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
 		    "forestsetObj.png", "utilities.png", "end.png",
@@ -273,12 +299,12 @@ var Q = window.Q = Quintus()
 			walk_right: { frames: [1,2,3], rate: 1/6},
 			walk_left: { frames: [5,6,7], rate: 1/6},
 			jump_right: { frames: [8], rate: 1/6},
-			wall_right:{frames: [9]},
+			wall_right:{frames: [9], loop: false},
 			jump_left: { frames: [10], rate: 1/6},
-			wall_right:{frames: [11]},
+			wall_left:{frames: [11], loop: false},
 			stand_right: { frames: [0], loop: false},
 			stand_left: { frames: [4], loop: false},
-			die: { frames: [12], loop: false, rate: 1}
+			death: { frames: [12], loop: false, rate: 1}
 		});
 
 		Q.scene("level1", function (stage){
