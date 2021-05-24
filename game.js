@@ -29,11 +29,9 @@ var Q = window.Q = Quintus()
                 sheet: "smb",
                 sprite: "smb_anim",
                 speed: 50,
-                x: 250,
-                y: 250,
                 frame: 0,
                 scale: 1,
-				gravity: .3
+				gravity: .2
             });
             this.add("2d, platformerControls, animation");
         },
@@ -185,13 +183,27 @@ var Q = window.Q = Quintus()
 				*/
 		}
 	});
+
 	Q.Sprite.extend("Goal",{
 		init: function(p){
 			this._super(p, {
 				 sheet: "utilities",
 				 frame: 55,
-				 scale: 1
+				 x: 350,
+				 y:900,
+				 scale: 1,
+				 sensor: true
 			 });
+			this.on('sensor', this, 'hit');
+		},
+		hit: function(collision){
+			if(!collision.isA("SuperMeatBoy")) return;
+				
+			collision.p.vy = -40;
+
+			Q.audio.play("coin.mp3");
+			this.destroy();
+			Q.stageScene("level2", 1);
 		}
 	});
 
@@ -234,12 +246,13 @@ var Q = window.Q = Quintus()
 		});
 
 	Q.load(["smb_anim.png", "smb_anim.json", "1up.png", "bg.png", "mapa2021.tmx",
-		    "tiles.png", "music_main.mp3",
-		    "kill_enemy.mp3", "jump_small.mp3",
-		    "coin.mp3", "portada.png", 
-		    "level_1.tmx","foresttiles01.png", "bg_base.png", "WorldMapTheme.mp3", "ForestFunk.mp3",
-		    "lvl_1.tmx","foresttiles01Fix.png", "modTiles1.json", "modTiles2.json","forestall.png",
-		    "forestdarkall.png", "modTilesObj.json", "utilities.json","foresttiles01bg.png", "Whip03.mp3", "forestsetObj.png", "utilities.png"],  function() {
+		    "tiles.png", "music_main.mp3", "kill_enemy.mp3", "jump_small.mp3","coin.mp3", "goomba.png", "goomba.json", "mario_small.png", "mario_small.json",
+		    "level_1.tmx", "lvl_1.tmx", "lvl_2.tmx", //tmx
+		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", //music
+		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
+		    "forestsetObj.png", "utilities.png",
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -270,11 +283,11 @@ var Q = window.Q = Quintus()
 			*/
 			Q.stageTMX("lvl_1.tmx", stage);
 		
-			smb = new Q.SuperMeatBoy();
+			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
 			stage.insert(smb);;
 			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1920, minY: 0, maxY: 1250}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
-			stage.viewport.scale = 1; //para acercar mas o menos la camara
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
+			stage.viewport.scale = .96; //para acercar mas o menos la camara
 			stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
@@ -283,6 +296,22 @@ var Q = window.Q = Quintus()
 			//Q.state.reset({lives:2});
 
 			Q.audio.play("ForestFunk.mp3", {loop: true});
+		});
+
+		Q.scene("level2", function (stage){
+
+			Q.stageTMX("lvl_2.tmx", stage);
+		
+			smb = new Q.SuperMeatBoy({x: 696, y: 1304});
+			stage.insert(smb);
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1920, minY: 0, maxY: 1380});
+			stage.viewport.scale = .96;
+			stage.viewport.offsetX = -250;
+			stage.on("destroy",function() {
+				smb.destroy();
+			});
+
+			Q.audio.play("Escape.mp3", {loop: true});
 		});
 
 		//HUD de vidas

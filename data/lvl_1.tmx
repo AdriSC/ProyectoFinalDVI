@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="32" height="21" tilewidth="60" tileheight="60" infinite="0" nextlayerid="18" nextobjectid="58">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="32" height="21" tilewidth="60" tileheight="60" infinite="0" nextlayerid="18" nextobjectid="58">
  <tileset firstgid="1" name="foresttiles01Fix" tilewidth="60" tileheight="60" tilecount="100" columns="10">
   <image source="../images/foresttiles01Fix.png" width="600" height="600"/>
  </tileset>
@@ -4271,7 +4271,7 @@
   </object>
  </objectgroup>
  <objectgroup id="17" name="goal">
-  <object id="46" gid="651" x="702" y="558" width="100" height="100">
+  <object id="46" gid="651" x="996.389" y="1079.97" width="100" height="100">
    <properties>
     <property name="frame" value="0"/>
     <property name="scale" value="0.6"/>
