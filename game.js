@@ -29,8 +29,6 @@ var Q = window.Q = Quintus()
                 sheet: "smb",
                 sprite: "smb_anim",
                 speed: 20,
-                x: 250,
-                y: 250,
                 frame: 0,
                 scale: 1,
 				gravity: .3
@@ -102,8 +100,10 @@ var Q = window.Q = Quintus()
         },
 
 		die: function(){
-			this.play("death");
+			//this.play("death");
 			this.destroy();
+			Q.audio.stop();
+			Q.stageScene(Q.stage(1).scene.name, 1);
         }
     });
 
@@ -279,7 +279,7 @@ var Q = window.Q = Quintus()
 	Q.load(["smb_anim.png", "smb_anim.json", "1up.png", "bg.png", "mapa2021.tmx",
 		    "tiles.png", "music_main.mp3", "kill_enemy.mp3", "jump_small.mp3","coin.mp3", "goomba.png", "goomba.json", "mario_small.png", "mario_small.json",
 		    "level_1.tmx", "lvl_1.tmx", "lvl_2.tmx", //tmx
-		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", //music
+		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
@@ -320,7 +320,7 @@ var Q = window.Q = Quintus()
 			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
 			stage.viewport.scale = .96; //para acercar mas o menos la camara
-			stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
+			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
 			});
@@ -338,7 +338,7 @@ var Q = window.Q = Quintus()
 			stage.insert(smb);
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1920, minY: 0, maxY: 1380});
 			stage.viewport.scale = .96;
-			stage.viewport.offsetX = -250;
+			//stage.viewport.offsetX = -250;
 			stage.on("destroy",function() {
 				smb.destroy();
 			});
@@ -385,30 +385,69 @@ var Q = window.Q = Quintus()
 		Q.scene('endGame', function(stage) {
 
 			var sprite = new Q.Sprite({ asset: "end.png", x: 400, y: 300, scale: 1 });
+			sprite.p.opacity=0;
+			sprite.add("tween");
       		stage.insert(sprite);
+      		sprite
+		        .animate({ x: 400, y:  300, opacity:1 }, 1, Q.Easing.Quadratic.InOut)
 
 			var container = stage.insert(new Q.UI.Container({
-				x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
+				x: Q.width/2, y: Q.height/2, fill: "rgba(255, 127, 80, 0.8)" , border: 2
 			}));
 
 			var button2 = container.insert(new Q.UI.Button({
-				x: 0, y: 0, fill: "#CCCCCC", label: "Play Again"
-			}), container);
+				x: 0, y: 0, fill: "#FFFFFF", label: "Play Again"
+			}));
 
 			var label = container.insert(new Q.UI.Text({
-				x:10, y: -10 - button2.p.h, label: "You win"
+				x: 0, y: -10 - button2.p.h, label: "You win !!", size: 25
 			}));
 
 			button2.on("click",function() {
 				Q.clearStages();
+				Q.audio.stop();
 				Q.stageScene('mainTitle');
 			});
 
 			container.fit(20);
-			Q.audio.stop();
+			container.add("tween");
+			container
+        		.animate({ x: 398, y:  370, opacity:1 }, 1, Q.Easing.Quadratic.InOut)
+
+			Q.audio.play("ChoirUnlock.mp3");
+
+			//Nombre de los integrantes
+			var container2 = stage.insert(new Q.UI.Container({
+				x: 950, y: 550, fill: "rgba(255, 127, 80, 0)" 
+			}));
+
+			var label1 = container2.insert(new Q.UI.Text({
+				x: 0, y: 0, label: "By: Adrián Salvador Crespo \n Sergio José Gomez Cortés \n Miriam Cabana Ramírez", size: 12, color: "#ffffff"
+			}));
+
+			container2.fit(20);
+			container2.add("tween");
+
+			container2
+        		.animate({ x: 105, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
+
+        	//Referencias
+        	var container3 = stage.insert(new Q.UI.Container({
+				x: 1050, y: 550, fill: "rgba(255, 127, 80, 0)" 
+			}));
+
+			var label1 = container3.insert(new Q.UI.Text({
+				x: 0, y: 0, label: "Original Game by: \n Edmund McMillen and Tommy Refenes", size: 12, color: "#ffffff"
+			}));
+
+			container3.fit(20);
+			container3.add("tween");
+
+			container3
+        		.animate({ x: 660, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
 		});
 
-		Q.debug = true;
+		//Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
