@@ -102,7 +102,7 @@ var Q = window.Q = Quintus()
 		die: function(){
 			//this.play("death");
 			this.destroy();
-			Q.audio.stop();
+			//Q.audio.stop();
 			Q.stageScene(Q.stage(1).scene.name, 1);
         }
     });
@@ -221,6 +221,11 @@ var Q = window.Q = Quintus()
 			 });
 			this.on('sensor', this, 'hit');
 			this.p.level;
+			this.p.points = [];
+			this.p.points.push([30,45]);
+			this.p.points.push([35,-10]);
+			this.p.points.push([-35,-10]);
+			this.p.points.push([-30,45]);
 		},
 		hit: function(collision){
 			if(!collision.isA("SuperMeatBoy")) return;
@@ -233,7 +238,8 @@ var Q = window.Q = Quintus()
 				//Q.stageScene("endGame", 1);
 				//return;
 			//}
-			Q.audio.stop();
+			//Q.audio.stop();
+			//Q.stageScene.destroy();
 			Q.stageScene(this.p.level, 1);
 		}
 	});
@@ -323,6 +329,7 @@ var Q = window.Q = Quintus()
 			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
+
 			});
 
 			//Q.state.reset({lives:2});
@@ -343,7 +350,7 @@ var Q = window.Q = Quintus()
 				smb.destroy();
 			});
 
-			Q.audio.play("Escape.mp3", {loop: true});
+			//Q.audio.play("Escape.mp3", {loop: true});
 		});
 
 		//HUD de vidas
@@ -447,7 +454,7 @@ var Q = window.Q = Quintus()
         		.animate({ x: 660, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
 		});
 
-		//Q.debug = true;
+		Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
