@@ -180,7 +180,8 @@ var Q = window.Q = Quintus()
 			});
 			this.p.points = [];
 			
-			//points in a circle from 0 to 15, where x: 2r / (nump / 2) and y: sqrt( sqr(r) - sqr(x)), this solve the first half, negative values on an inverse order for the second half
+			//points in a circle from 0 to 15, where x: 2r / (nump / 2) and y: sqrt( sqr(r) - sqr(x)), 
+			//this solve the first half, negative values on an inverse order for the second half
 			for(var i = 0; i < 16; i++) {
 		        if(i<8) this.p.points.push([((100/8)*i)-50, Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*i)-50),2))]);
 		    	if(i>=8) this.p.points.push([((100/8)*(i-(2*(i-8))))-50, (-1)*Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*(i-(2*(i-8))))-50),2))]);
