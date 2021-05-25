@@ -843,11 +843,13 @@
   <object id="77" gid="413" x="1375.18" y="900" width="60" height="60">
    <properties>
     <property name="frame" value="12"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
   <object id="78" gid="413" x="1380.18" y="895" width="60" height="60">
    <properties>
     <property name="frame" value="12"/>
+    <property name="type" value="0"/>
    </properties>
   </object>
  </objectgroup>
@@ -2973,7 +2975,7 @@
     <property name="type" value="0"/>
    </properties>
   </object>
-  <object id="20" gid="607" x="40" y="252" width="100" height="200">
+  <object id="20" gid="607" x="34" y="270" width="100" height="200">
    <properties>
     <property name="frame" value="6"/>
     <property name="scale" value="0.5"/>
@@ -5094,7 +5096,7 @@
   <properties>
    <property name="type" value="0"/>
   </properties>
-  <object id="36" gid="622" x="56" y="636" width="100" height="200">
+  <object id="36" gid="622" x="-19" y="636" width="100" height="200">
    <properties>
     <property name="angle" value="180"/>
     <property name="frame" value="21"/>
