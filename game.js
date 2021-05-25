@@ -307,6 +307,7 @@ var Q = window.Q = Quintus()
 				x: 0, y: -10 - button2.p.h, label: "You win !!", size: 25
 			}));
 
+			Q.audio.stop();
 			button2.on("click",function() {
 				Q.clearStages();
 				Q.audio.stop();
