@@ -3,23 +3,14 @@ var game = function() {
 var Q = window.Q = Quintus()
 	       .include("Sprites, Scenes, Input, 2D, Anim, Touch, UI, TMX, Audio")
 
-	       .setup('myGame',
+	       .setup('Super Meat Boy',
 	       {
 	       	width: 800,
 	       	height: 600,
 	       	scaleToFit : true //Scale the game to fit the screen of the player´s device
 	       })
 	       .controls().enableSound()
-	       .touch();
-
-	Q.component("dancer", {
-		extend: {
-			dance: function(){
-				this.p.angle = 0;
-				this.animate({angle: 360}, 0.5, Q.Easing.Quadratic.In);
-			}
-		}
-	});       
+	       .touch();     
 
 	//Sprite personaje principal
 	Q.Sprite.extend("SuperMeatBoy",{
@@ -28,16 +19,15 @@ var Q = window.Q = Quintus()
             this._super(p, {
                 sheet: "smb",
                 sprite: "smb_anim",
-                speed: 20,
+                speed: 150,
                 frame: 0,
                 scale: 1,
 				gravity: .3
             });
-            this.add("2d, platformerControls, aiBounce, animation");
+            this.add("2d, platformerControls, animation");
 			this.on("bump.left, bump.right", this, "stick_on_wall");
 			this.on("jump");
     		this.on("jumped");
-			
         },
 
 		stick_on_wall: function(collision){
@@ -85,8 +75,8 @@ var Q = window.Q = Quintus()
             }
 
 			if(this.p.vx == 0 && this.p.vy == 0){
-				this.play("stand_right");
-				this.p.speed = 50;
+				this.play('stand_' + this.p.direction);
+				this.p.speed = 150;
 			}
 
 			if(this.p.vy != 0){
@@ -107,69 +97,6 @@ var Q = window.Q = Quintus()
         }
     });
 
-	//Sprite de la seta
-	/*Q.Sprite.extend("OneUp",{
-			init: function(p) {
-				this._super(p, {
-					 asset: "1up.png",
-					 scale: 1,
-					 x: 20, //respecto a mario
-					 y: -10,
-					 sensor: true, //para que los objetos dejen pasar a mario aunque colisionen
-				 	 taken: false
-				 });
-				this.on("sensor", this, "hit");
-				this.add("tween"); //para animar y rotarla
-			},
-			hit: function(collision){
-				if(this.taken) return;
-				if(!collision.isA("SuperMeatBoy")) return;
-				
-				this.taken = true; //para coger las setas y que desaparezcan
-				Q.state.inc("lives", 1);
-				console.log(Q.state.get("lives"));
-				collision.p.vy = -400;
-				
-				this.animate({y: this.p.y-100, angle:360}, //-200 para que la seta gire mas alto
-							  2, //que tarde mas
-							  Q.Easing.Quadratic.Out, //podemos probar animaciones diferntes In, InOut
-							  {callback: function(){this.destroy()}});
-				//this.destroy();
-				Q.audio.play("coin.mp3");
-			}
-		});*/
-
-	// Sprite del enemigo
-	/*Q.Sprite.extend("Goomba",{
-		init: function(p) {
-			this._super(p, {
-				 sheet: 'goomba',
-				 x: 400+(Math.random()*200),
-				 y: 250,
-				 frame: 0,
-				 vx: 100
-			 });
-
-			this.add('2d, aiBounce, animation'); //componentes
-			this.on("bump.top", this, "onTop");
-			this.on("bump.left,bump.right,bump.bottom",this, "kill");
-		},
-		onTop: function(collision){
-			if(!collision.obj.isA("SuperMeatBoy")) return;
-			collision.obj.p.vy = -200;
-			console.log("Goomba dies");
-			this.destroy();
-			Q.audio.play("kill_enemy.mp3");
-		},
-		kill: function(collision){
-			if(!collision.obj.isA("SuperMeatBoy")) return;
-			collision.obj.p.vy = -200;
-			collision.obj.p.vx = collision.normalX *-500;
-			collision.obj.p.x += collision.normalX *-5;
-			collision.obj.die();
-		}
-	});*/
-
 	Q.Sprite.extend("Saw",{
 		init: function(p){
 			this._super(p, {
@@ -187,9 +114,7 @@ var Q = window.Q = Quintus()
 		    	if(i>=8) this.p.points.push([((100/8)*(i-(2*(i-8))))-50, (-1)*Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*(i-(2*(i-8))))-50),2))]);
 		    }
 
-			//this.add("tween");
-			//this.anim();
-			this.on("sensor", this, "kill");		//this.on ("collision", this, "kill")
+			this.on("sensor", this, "kill");		
 		},
 
 		step: function(dt){
@@ -199,14 +124,7 @@ var Q = window.Q = Quintus()
 		kill: function(collision){
 				if(!collision.isA("SuperMeatBoy")) return;
 				collision.die();
-				//collision.obj.destroy();
-
-				/*
-					this.animate({y: this.p.y-100, angle: 360},
-					1,
-					Q.Easing.Quadratic.InOut,
-					{callback: function(){this.destroy()}});
-				*/
+				
 		}
 	});
 
@@ -233,14 +151,8 @@ var Q = window.Q = Quintus()
 				
 			collision.p.vy = -40;
 
-			//Q.audio.play("coin.mp3");
 			this.destroy();
-			//if(Q.stage(1).scene.name == "level2"){
-				//Q.stageScene("endGame", 1);
-				//return;
-			//}
-			//Q.audio.stop();
-			//Q.stageScene.destroy();
+			
 			Q.stageScene(this.p.level, 1);
 		}
 	});
@@ -252,7 +164,7 @@ var Q = window.Q = Quintus()
 					 sheet: "modTilesObj",
 					 frame: 55,
 					 scale: 1,
-					 x: 20, //respecto a mario
+					 x: 20,
 					 y: -10,
 					 sensor: true
 				 });
@@ -266,7 +178,7 @@ var Q = window.Q = Quintus()
 					 sheet: "modTilesdark",
 					 frame: 55,
 					 scale: 1,
-					 x: 20, //respecto a mario
+					 x: 20, 
 					 y: -10,
 					 sensor: true
 				 });
@@ -283,9 +195,8 @@ var Q = window.Q = Quintus()
 			}
 		});
 
-	Q.load(["smb_anim.png", "smb_anim.json", "1up.png", "bg.png", "mapa2021.tmx",
-		    "tiles.png", "music_main.mp3", "kill_enemy.mp3", "jump_small.mp3","coin.mp3", "goomba.png", "goomba.json", "mario_small.png", "mario_small.json",
-		    "level_1.tmx", "lvl_1.tmx", "lvl_2.tmx", //tmx
+	Q.load(["smb_anim.png", "smb_anim.json", 
+		 	"lvl_1.tmx", "lvl_2.tmx", //tmx
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
@@ -295,7 +206,6 @@ var Q = window.Q = Quintus()
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
-		//Q.compileSheets("utilities.png","saw.json");
 		Q.compileSheets("foresttiles01bg.png","modTiles1.json");
 		Q.compileSheets("foresttiles01Fix.png","modTiles2.json");
 		Q.compileSheets("forestsetObj.png","modTilesObj.json");
@@ -315,17 +225,13 @@ var Q = window.Q = Quintus()
 		});
 
 		Q.scene("level1", function (stage){
-			/*
-			stage.insert(
-				new Q.Repeater({asset: "bg.png", speedX: 0.5, speedY: 0.5}) //para repetir el fondo
-			);
-			*/
+		
 			Q.stageTMX("lvl_1.tmx", stage);
 		
 			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
 			stage.insert(smb);
-			//stage.insert(new Q.OneUp(), mario); //para que la seta se mueva con mario
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a mario, AQUI SE MODIFICA LA CAMARA
+			
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
 			stage.viewport.scale = .96; //para acercar mas o menos la camara
 			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
@@ -333,7 +239,6 @@ var Q = window.Q = Quintus()
 
 			});
 
-			//Q.state.reset({lives:2});
 
 			Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
@@ -353,15 +258,6 @@ var Q = window.Q = Quintus()
 
 			//Q.audio.play("Escape.mp3", {loop: true});
 		});
-
-		//HUD de vidas
-		/*Q.scene("hud", function(stage){
-			label_lives = new Q.UI.Text({x:50, y:0, label: "lives:2"});
-			stage.insert(label_lives);
-			Q.state.on("change.lives",this,function(){
-				label_lives.p.label = "lives: " + Q.state.get("lives");
-			});
-		});*/
 
 		//Pantalla principal
 		Q.scene("mainTitle", function(stage){
@@ -455,7 +351,7 @@ var Q = window.Q = Quintus()
         		.animate({ x: 660, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
 		});
 
-		Q.debug = true;
+		//Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
