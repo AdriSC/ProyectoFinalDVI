@@ -19,10 +19,11 @@ var Q = window.Q = Quintus()
             this._super(p, {
                 sheet: "smb",
                 sprite: "smb_anim",
-                speed: 150,
+                speed: 200,
                 frame: 0,
                 scale: 1,
-				gravity: .3
+				gravity: .6,
+				onWall: false
             });
             this.add("2d, platformerControls, animation");
 			this.on("bump.left, bump.right", this, "stick_on_wall");
@@ -32,7 +33,9 @@ var Q = window.Q = Quintus()
 
 		stick_on_wall: function(collision){
 			
-			if(collision.obj.isA("Goal")) return;
+			//if(collision.obj.isA("Goal")) return;
+			this.p.onWall = true;
+			this.p.gravity = .5;
 			if(collision.normalX == 1 && collision.normalY == 0){
 				this.p.landed = true;
 				this.play("wall_left");
@@ -55,12 +58,12 @@ var Q = window.Q = Quintus()
 		},
 
         step: function(dt){
-			
+
 			if(Q.inputs['left']){
                 this.play("walk_left");
                 //aceleración izq
                 if(this.p.speed < 500){
-                    this.p.speed += 200*dt;
+                    this.p.speed += 10;
                 }
                 
             }
@@ -69,14 +72,15 @@ var Q = window.Q = Quintus()
                 this.play("walk_right");
                 //aceleración dcha
                 if(this.p.speed < 500){
-                    this.p.speed += 200*dt;
+                    this.p.speed += 10;
                 }
                 
             }
 
 			if(this.p.vx == 0 && this.p.vy == 0){
 				this.play('stand_' + this.p.direction);
-				this.p.speed = 150;
+				this.p.speed = 200;
+				this.p.gravity = .6;
 			}
 
 			if(this.p.vy != 0){
