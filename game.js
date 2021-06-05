@@ -164,7 +164,8 @@ var Q = window.Q = Quintus()
 				 sheet: "sand",
 				 frame: 0,
 				 collision: true,
-				 gravity: 0
+				 gravity: 0,
+				 scale: 0.8955
 			 });
 			this.add("animation,2d");
 			this.on("bump.left,bump.right,bump.bottom,bump.top",this, "anim");
@@ -194,7 +195,8 @@ var Q = window.Q = Quintus()
 				 sprite: "sand",
 				 sheet: "sand",
 				 frame: 0,
-				 sensor: true
+				 sensor: true,
+				 scale: 0.8955
 			 });
 			this.add("animation");
 			this.on("erase2",this,"erased");
