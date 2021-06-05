@@ -157,6 +157,61 @@ var Q = window.Q = Quintus()
 		}
 	});
 
+	Q.Sprite.extend("Sand",{
+		init: function(p){
+			this._super(p, {
+				 sprite: "sand",
+				 sheet: "sand",
+				 frame: 0,
+				 collision: true,
+				 gravity: 0
+			 });
+			this.add("animation,2d");
+			this.on("bump.left,bump.right,bump.bottom,bump.top",this, "anim");
+			this.on("erase",this,"erased");
+			this.animated = false;
+			
+		},
+		anim: function(collision){
+			if(!collision.obj.isA("SuperMeatBoy")) return;
+			if(this.animated) return;
+			this.animated = true;
+			this.play("destroying");	
+		},
+		erased: function(){
+			this.stage.insert(new Q.SandDes({
+                        x: this.p.x,
+                        y: this.p.y,
+                        scale: this.p.scale
+                    }));
+			this.destroy();
+		}
+	});
+
+	Q.Sprite.extend("SandDes",{
+		init: function(p){
+			this._super(p, {
+				 sprite: "sand",
+				 sheet: "sand",
+				 frame: 0,
+				 sensor: true
+			 });
+			this.add("animation");
+			this.on("erase2",this,"erased");
+			this.animated = false;
+			this.anim();
+			
+		},
+		anim: function(){
+			if(this.animated) return;
+			this.animated = true;
+			this.play("destroying2");	
+		},
+		erased: function(){
+			this.destroy();
+		}
+	});
+
 	Q.Sprite.extend("ModTilesObj",{
 			init: function(p) {
 				
@@ -201,8 +256,8 @@ var Q = window.Q = Quintus()
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
-		    "forestsetObj.png", "utilities.png", "end.png",
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json"], function() {
+		    "forestsetObj.png", "utilities.png", "end.png", "sand.png",
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -210,6 +265,7 @@ var Q = window.Q = Quintus()
 		Q.compileSheets("foresttiles01Fix.png","modTiles2.json");
 		Q.compileSheets("forestsetObj.png","modTilesObj.json");
 		Q.compileSheets("utilities.png","utilities.json");
+		Q.compileSheets("sand.png", "sand.json");
 
 		
 		Q.animations("smb_anim", {
@@ -222,6 +278,13 @@ var Q = window.Q = Quintus()
 			stand_right: { frames: [0], loop: false},
 			stand_left: { frames: [4], loop: false},
 			death: { frames: [12], loop: false, rate: 1}
+		});
+
+		Q.animations("sand", {
+			destroying: { frames: [0], next: 'bodyDes', rate: 1, trigger: "erase"},
+			bodyDes: { frames: [0], rate: 1/100, trigger: "erase"},
+			destroying2: { frames: [0,1,2,3,4,5,6,7,8,9,10], next: 'destroyed', rate: 1/10},
+			destroyed: { frames: [11,12], rate: 1/10, loop:false, trigger: "erase2"}
 		});
 
 		Q.scene("level1", function (stage){
