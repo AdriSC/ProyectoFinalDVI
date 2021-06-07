@@ -77,11 +77,25 @@ var Q = window.Q = Quintus()
                 
             }
 
+			if(Q.inputs['up'] && this.p.onWall){
+				
+				this.p.onWall = false;
+				this.p.vy = -300;
+				if(this.p.direction == 'right'){
+					this.p.vx += -5000;
+				}
+				else if(this.p.direction == 'left'){
+					this.p.vx += 5000;
+				}
+				
+			}
+
 			if(this.p.vx == 0 && this.p.vy == 0){
 				this.play('stand_' + this.p.direction);
 				this.p.speed = 200;
 				this.p.gravity = .6;
 			}
+
 
 			if(this.p.vy != 0){
 				if(this.p.vx > 0){
