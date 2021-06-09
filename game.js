@@ -185,10 +185,15 @@ var Q = window.Q = Quintus()
 				 gravity: 0,
 				 scale: 0.8955
 			 });
-			this.add("animation,2d");
-			this.on("bump.left,bump.right,bump.bottom,bump.top",this, "anim");
+			this.add("animation");
+			this.on("hit",this, "anim");
 			this.on("erase",this,"erased");
 			this.animated = false;
+			this.p.points = [];
+			this.p.points.push([-33.5,-49]);
+			this.p.points.push([-33.5,15]);
+			this.p.points.push([33.5,-49]);
+			this.p.points.push([33.5,15]);
 			
 		},
 		anim: function(collision){
@@ -229,6 +234,63 @@ var Q = window.Q = Quintus()
 		},
 		erased: function(){
 			this.destroy();
+		}
+	});
+
+	Q.Sprite.extend("SawGenerator",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "SawGen",
+				 scale: 1,
+				 collision: true,
+				 gravity: 0
+			 });
+			this.on('step', this, "step");
+			this.p.saw_vx;
+			this.p.saw_vy;
+			this.p.time = 0;
+			this.p.spawn = 4;
+		},
+		genSaw: function(){
+			var p = this.p;
+			this.stage.insert(new Q.SawDes({
+				x: p.x,
+				y: p.y,
+				vx: p.saw_vx,
+				vy: p.saw_vy
+			}))
+		},
+		step: function(dt){
+			this.p.time += dt;
+			if(!this.cooldown && (this.p.time % this.p.spawn) < 0.1) {
+				this.cooldown = true;
+				this.genSaw();
+			}
+			if(this.cooldown && (this.p.time+1) % this.p.spawn < 0.1) this.cooldown = false;
+		}
+	});
+
+	Q.Sprite.extend("SawDes",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "utilities",
+				 frame: 18,
+				 scale: 0.65
+			 });
+			this.kill = false;
+			this.on('hit', this, 'die');
+			this.on('step', this, "step");
+		},
+		die: function(collision){
+			if(!this.kill){
+				this.kill = true;
+				if(collision.obj.isA("SuperMeatBoy")) collision.obj.die();					
+				this.destroy();
+			}		
+		},
+		step: function(dt){
+			this.p.x += this.p.vx;
+			this.p.y += this.p.vy; 
 		}
 	});
 
