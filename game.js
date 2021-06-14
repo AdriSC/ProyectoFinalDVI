@@ -252,12 +252,18 @@ var Q = window.Q = Quintus()
 			this.p.spawn = 4;
 		},
 		genSaw: function(){
-			var p = this.p;
-			this.stage.insert(new Q.SawDes({
-				x: p.x,
-				y: p.y,
-				vx: p.saw_vx,
-				vy: p.saw_vy
+			var p = this.p, spawnx = 0, spawny = 0;
+			if(p.angle == 0) spawnx = -100;
+			if(p.angle == 90) spawny = -50;
+			if(p.angle == 180) spawnx = 100;
+			if(p.angle == 270) spawny = 50;
+
+			this.stage.insert(new Q.SawDes({				
+				x: p.x+spawnx,
+				y: p.y+spawny,
+				vx: p.saw_vx*50,
+				vy: p.saw_vy*50,
+				angle: p.angle
 			}))
 		},
 		step: function(dt){
@@ -275,22 +281,57 @@ var Q = window.Q = Quintus()
 			this._super(p, {
 				 sheet: "utilities",
 				 frame: 18,
-				 scale: 0.65
+				 scale: 0.65,
+				 gravity: 0
 			 });
+			this.p.points = [];
+			
+			for(var i = 0; i < 16; i++) {
+		        if(i<8) this.p.points.push([((100/8)*i)-50, Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*i)-50),2))]);
+		    	if(i>=8) this.p.points.push([((100/8)*(i-(2*(i-8))))-50, (-1)*Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*(i-(2*(i-8))))-50),2))]);
+		    }
+
 			this.kill = false;
+			this.add("2d");
 			this.on('hit', this, 'die');
-			this.on('step', this, "step");
 		},
 		die: function(collision){
+			if(collision.obj.isA("SawGenerator")) return;
 			if(!this.kill){
 				this.kill = true;
-				if(collision.obj.isA("SuperMeatBoy")) collision.obj.die();					
+				if(collision.obj.isA("SuperMeatBoy")) collision.obj.die();
+
+				this.stage.insert(new Q.SawDesAnim({				
+					x: this.p.x,
+					y: this.p.y,
+					angle: Math.random() * 360
+				}));
 				this.destroy();
 			}		
 		},
 		step: function(dt){
-			this.p.x += this.p.vx;
-			this.p.y += this.p.vy; 
+			this.p.angle += dt*1500;
+		}
+	});
+
+	Q.Sprite.extend("SawDesAnim",{
+		init: function(p) {			
+			this._super(p, {			 
+				 sheet: "sawDesAnim",
+				 sprite: "sawDesAnim",
+				 frame: 0,
+				 scale: 0.65,
+				 sensor: true
+			 });
+			this.add("animation");
+			this.anim();
+			this.on("sawDess", this, "sawDes")
+		},
+		anim: function(p) {			
+			this.play("destroySaw");
+		},
+		sawDes: function(p) {			
+			this.destroy();
 		}
 	});
 
@@ -338,8 +379,8 @@ var Q = window.Q = Quintus()
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
-		    "forestsetObj.png", "utilities.png", "end.png", "sand.png",
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json"], function() {
+		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png",
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -348,6 +389,8 @@ var Q = window.Q = Quintus()
 		Q.compileSheets("forestsetObj.png","modTilesObj.json");
 		Q.compileSheets("utilities.png","utilities.json");
 		Q.compileSheets("sand.png", "sand.json");
+		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
+		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
 
 		
 		Q.animations("smb_anim", {
@@ -367,6 +410,10 @@ var Q = window.Q = Quintus()
 			bodyDes: { frames: [0], rate: 1/100, trigger: "erase"},
 			destroying2: { frames: [0,1,2,3,4,5,6,7,8,9,10], next: 'destroyed', rate: 1/10},
 			destroyed: { frames: [11,12], rate: 1/10, loop:false, trigger: "erase2"}
+		});
+
+		Q.animations("sawDesAnim", {
+			destroySaw: { frames: [0,1,2,3,4], loop: false, rate: 1/10, trigger: "sawDess"}
 		});
 
 		Q.scene("level1", function (stage){
