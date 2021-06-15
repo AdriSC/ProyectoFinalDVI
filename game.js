@@ -399,6 +399,59 @@ var Q = window.Q = Quintus()
 		}
 	});
 
+	//Para usar en Tiled, establecer campo ukey al valor de la key que lo activara y tkey para que active a su vez otra
+	Q.Sprite.extend("Keyhole",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "utilities",
+				 frame: 55,
+				 scale: 0.75,
+				 collision: true,
+				 gravity: 0,
+				 ukey: -1, 	//unlockKey
+				 tkey: -1  //triggerNextKey
+			 });
+			this.p.points = [];
+			this.p.points.push([-41.5,-41.5]);
+			this.p.points.push([-41.5,41.5]);
+			this.p.points.push([41.5,-41.5]);
+			this.p.points.push([41.5,41.5]);
+
+			Q.state.on("change.key", this, "unlock");
+			this.add("tween");			
+		},
+		unlock: function(){
+			if(Q.state.get("key") != this.p.ukey) return;
+			Q.state.set("key",this.p.tkey);
+			this.animate({ scale: 0 }, 1.5, Q.Easing.Quadratic.Out, { callback: function(){ this.destroy(); } });
+		}
+	});
+
+	//Para usar en Tiled, establecer campo key al valor de la key que va a activar
+	Q.Sprite.extend("Key",{
+		init: function(p){
+			this._super(p, {
+				 sheet: "utilities",
+				 frame: 55,
+				 scale: 0.5,
+				 sensor: true,
+				 key: -1
+			 });
+			this.p.points = [];
+			this.p.points.push([-15.5,-33]);
+			this.p.points.push([-15.5,27]);
+			this.p.points.push([21.5,27]);
+			this.p.points.push([21.5,-33]);
+
+			this.on("sensor", this, "pick");			
+		},
+		pick: function(collision){
+			if(!collision.isA("SuperMeatBoy")) return;
+			Q.state.set("key",this.p.key);
+			this.destroy();
+		}
+	});
+
 	Q.Sprite.extend("ModTilesObj",{
 			init: function(p) {
 				
@@ -479,6 +532,9 @@ var Q = window.Q = Quintus()
 		Q.animations("sawDesAnim", {
 			destroySaw: { frames: [0,1,2,3,4], loop: false, rate: 1/10, trigger: "sawDess"}
 		});
+
+		//Estado que lleva el id de la llave activada en este momento
+		Q.state.reset({ key: -2 });
 
 		Q.scene("level1", function (stage){
 		
