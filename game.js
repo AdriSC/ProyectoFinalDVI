@@ -122,8 +122,18 @@ var Q = window.Q = Quintus()
 				 frame: 55,
 				 scale: 1,
 				 sensor: true,
+				 movex: 0,
+				 movey: 0,
+				 moveang: 0,
+				 distangx: 0,
+				 distangy: 0
 			});
 			this.p.points = [];
+			this.initx = this.p.x+this.p.cx;
+			this.inity = this.p.y-this.p.cy;
+
+			if(p.movex > 0) this.right = true;
+			if(p.movey > 0) this.down = true;
 			
 			//points in a circle from 0 to 15, where x: 2r / (nump / 2) and y: sqrt( sqr(r) - sqr(x)), 
 			//this solve the first half, negative values on an inverse order for the second half
@@ -136,7 +146,59 @@ var Q = window.Q = Quintus()
 		},
 
 		step: function(dt){
-			this.p.angle += 200 * dt;
+			var p = this.p;
+			p.angle += -200 * dt;
+
+			//Si hay movimiento angular, positivo rota clockwise, negativo rota anti-clockwise
+			//Para utilizarlo con Tiled, añadir campos distangx y distangy para la posicion del punto respecto a la del sprite, y el campo moveang para la velocidad (a mayor valor mas velocidad)
+			//Es necesario importar el script math.js para que funcione
+			//La posicion inicial se calcula como initx = p.x + p.cx e inity = p.y - p.cy, ya que inicialmente no tiene en cuenta el ancho del srpite, sin esto rota sin control
+			if(p.moveang != 0){
+				var px = this.initx+p.distangx, py = this.inity+p.distangy,
+				ang = dt*p.moveang;
+
+				//Las posiciones resultado se calculan multiplicando la matriz de la posicion del sprite por la matriz de rotacion sobre el punto x, y
+				//Por lo tanto Xout e Yout son el resultado, Xin e Yin la posicion del sprite y X e Y el punto sobre el que rota
+				
+				//		[Xout]							[1,0,X]		[cos(theta),-sin(theta),0]		[1,0,-X]			[Xin]
+				// mR= 	[Yout]	== 	  mRot=	mA*mB*mC=	[0,1,Y]	 *	[sin(theta),cos(theta),0]	*	[0,1,-Y]   *   mO =	[Yin]
+				//		[1]								[0,0,1]		[0,0,1]							[0,0,1]				[1]
+
+				var mO = math.matrix([[p.x], [p.y], [1]]),
+				mA = math.matrix([[1, 0, px], [0, 1, py], [0, 0, 1]]),
+				mB = math.matrix([[Math.cos(ang), Math.sin(ang)*(-1), 0],[Math.sin(ang), Math.cos(ang), 0],[0, 0, 1]]),
+				mC = math.matrix([[1, 0, px*(-1)], [0, 1, py*(-1)], [0, 0, 1]]),
+
+				mR = math.multiply(math.multiply(math.multiply(mA, mB), mC), mO);
+			
+				this.p.x = math.subset(mR, math.index(0,0));
+				this.p.y = math.subset(mR, math.index(1,0));
+				
+			}
+			//Si hay movimiento horizontal, viaja hasta el p.x + p.movex y vuelve en bucle (solo valores positivos)
+			//Para utilizarlo con Tiled, añadir campo movex con el valor hasta el que quieres moverlo
+			else if(p.movex != 0){
+				if(this.right){
+					this.p.x += dt*100;
+					if(this.p.x > (this.initx + p.movex)) this.right = false;
+				}
+				else{
+					this.p.x -= dt*100;
+					if(this.p.x < this.initx) this.right = true;
+				}
+			}
+			//Si hay movimiento vertical, viaja hasta el p.y + p.movey y vuelve en bucle (solo valores positivos)
+			//Para utilizarlo con Tiled, añadir campo movey con el valor hasta el que quieres moverlo
+			else if(p.movey != 0){
+				if(this.down){
+					this.p.y += dt*100;
+					if(this.p.y > (this.inity + p.movey)) this.down = false;
+				}
+				else{
+					this.p.y -= dt*100;
+					if(this.p.y < this.inity) this.down = true;
+				}
+			}
 		},
 
 		kill: function(collision){
