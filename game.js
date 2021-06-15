@@ -299,6 +299,7 @@ var Q = window.Q = Quintus()
 		}
 	});
 
+	//Para que funcione correctamente con Tiled, darle valor al campo angle: 0 || 90 || 180 || 270 y añadir campos saw_vx y saw_vy
 	Q.Sprite.extend("SawGenerator",{
 		init: function(p){
 			this._super(p, {
