@@ -105,6 +105,15 @@ var Q = window.Q = Quintus()
 				}
 			}
 
+
+			//borders
+			if(smb.p.x < minX) smb.p.x = minX;
+			if(smb.p.x > maxX) smb.p.x = maxX;
+			if(smb.p.y < minY) {
+				smb.p.y = minY;
+				this.p.vy = 0; //si no se queda medio quieto al llegar al tope
+			}	
+
         },
 
 		die: function(){
@@ -232,8 +241,23 @@ var Q = window.Q = Quintus()
 			collision.p.vy = -40;
 
 			this.destroy();
-			
-			Q.stageScene(this.p.level, 1);
+      		var level = this.p.level;
+
+			if(this.p.level != "endGame"){ //transicion entre escena y escena
+				var sprite = new Q.Sprite({ asset: "sierra_negra.png", x: 745, y: 530, scale: 1, type: 0 });
+				sprite.p.opacity=0;
+				sprite.add("tween");
+	      		this.stage.insert(sprite);
+	      		sprite
+			        .animate({ x: 745, y: 530, opacity: 1 }, .0001, Q.Easing.Quadratic.InOut)
+			       // .chain({ angle: 360}, .5)
+	      			.chain({ x: 745, y: 530, scale: 20, angle: 900}, .5, Q.Easing.Quadratic.In,
+	      			 	   {callback: function(){
+						 		  				Q.stageScene(level, 1);
+						 	}})
+			  	collision.destroy(); // destruye al MeatBoy
+			}
+			else Q.stageScene(this.p.level, 1);
 		}
 	});
 
@@ -496,7 +520,7 @@ var Q = window.Q = Quintus()
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
-		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png",
+		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png",
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
@@ -543,8 +567,11 @@ var Q = window.Q = Quintus()
 			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
 			stage.insert(smb);
 			
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1830, minY: 0, maxY: 1200}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
-			stage.viewport.scale = .96; //para acercar mas o menos la camara
+			minX = 25;
+			maxX = 1885;
+			minY = 18;
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+			stage.viewport.scale = .7; //para acercar mas o menos la camara
 			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
@@ -561,8 +588,12 @@ var Q = window.Q = Quintus()
 		
 			smb = new Q.SuperMeatBoy({x: 696, y: 1304});
 			stage.insert(smb);
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1920, minY: 0, maxY: 1380});
-			stage.viewport.scale = .96;
+
+			minX = 25;
+			maxX = 1885;
+			minY = 18;
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1340, minY: 0, maxY: 1000});
+			stage.viewport.scale = .7;
 			//stage.viewport.offsetX = -250;
 			stage.on("destroy",function() {
 				smb.destroy();
@@ -612,7 +643,7 @@ var Q = window.Q = Quintus()
 			}));
 
 			var button2 = container.insert(new Q.UI.Button({
-				x: 0, y: 0, fill: "#FFFFFF", label: "Play Again"
+				x: 0, y: 0, fill: "#FFFFFF", label: "Play Again", border:2
 			}));
 
 			var label = container.insert(new Q.UI.Text({
