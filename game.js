@@ -114,6 +114,8 @@ var Q = window.Q = Quintus()
 				this.p.vy = 0; //si no se queda medio quieto al llegar al tope
 			}	
 
+			Q.state.set("timer", dt);
+
         },
 
 		die: function(){
@@ -121,6 +123,7 @@ var Q = window.Q = Quintus()
 			this.destroy();
 			//Q.audio.stop();
 			Q.stageScene(Q.stage(1).scene.name, 1);
+			Q.stageScene("timer", 2);
         }
     });
 
@@ -244,17 +247,18 @@ var Q = window.Q = Quintus()
       		var level = this.p.level;
 
 			if(this.p.level != "endGame"){ //transicion entre escena y escena
-				var sprite = new Q.Sprite({ asset: "sierra_negra.png", x: 745, y: 530, scale: 1, type: 0 });
+				var sprite = new Q.Sprite({ asset: "sierra_negra.png", x: this.stage.viewport.centerX, y: this.stage.viewport.centerY, scale: 1, type: 0 });
 				sprite.p.opacity=0;
 				sprite.add("tween");
 	      		this.stage.insert(sprite);
 	      		sprite
-			        .animate({ x: 745, y: 530, opacity: 1 }, .0001, Q.Easing.Quadratic.InOut)
+			        .animate({ opacity: 1 }, .0001, Q.Easing.Quadratic.InOut)
 			       // .chain({ angle: 360}, .5)
-	      			.chain({ x: 745, y: 530, scale: 20, angle: 900}, .5, Q.Easing.Quadratic.In,
+	      			.chain({  scale: 20, angle: 900}, .5, Q.Easing.Quadratic.In,
 	      			 	   {callback: function(){
 						 		  				Q.stageScene(level, 1);
-						 	}})
+						 		  				Q.stageScene("timer", 2);
+					}})
 			  	collision.destroy(); // destruye al MeatBoy
 			}
 			else Q.stageScene(this.p.level, 1);
@@ -558,7 +562,7 @@ var Q = window.Q = Quintus()
 		});
 
 		//Estado que lleva el id de la llave activada en este momento
-		Q.state.reset({ key: -2 });
+		Q.state.reset({ key: -2, timer: "" });
 
 		Q.scene("level1", function (stage){
 		
@@ -602,6 +606,34 @@ var Q = window.Q = Quintus()
 			//Q.audio.play("Escape.mp3", {loop: true});
 		});
 
+		//Timer
+		Q.scene("timer", function(stage){
+			var time = 0;
+			label_timer = new Q.UI.Text({x:100, y:0, label: "00 : 00 : 00"});
+			stage.insert(label_timer);
+			Q.state.on("change.timer", this, function(){
+				time += Q.state.get("timer");
+				var ms = time*1000;
+				var s = ms/1000;
+				var m = s/60;
+		        m = Math.floor(m);
+		        s = Math.floor(s) - m*60;
+		        ms = Math.floor(ms) - m*60000 - s*1000;
+
+		        while (ms.toString().length < 3){
+    				ms = '0' + ms;
+		        }
+		      	while (s.toString().length < 2){
+    				s = '0' + s;
+		        }
+		       	while (m.toString().length < 2){
+    				m = '0' + m;
+		        }
+				label_timer.p.label = m + " : " + s + " : " + ms;
+;
+			});
+		});
+
 		//Pantalla principal
 		Q.scene("mainTitle", function(stage){
 			var button = new Q.UI.Button({
@@ -619,18 +651,18 @@ var Q = window.Q = Quintus()
 					 		  				Q.clearStages();
 					 		  				Q.audio.stop();
 					 		  				Q.stageScene("level1", 1); //va a la capa del fondo
-					 		  				Q.stageScene("hud", 2);}})
+					 		  				Q.stageScene("timer", 2);}})
 			});
 			stage.insert(button);
 			button
-		        .animate({ x: 400, y:  300, opacity:1 }, .5, Q.Easing.Quadratic.InOut)
+		        .animate({ x: 400, y: 300, opacity:1 }, .5, Q.Easing.Quadratic.InOut)
 		        .chain({ angle: 360}, .3)
 			Q.audio.play("WorldMapTheme.mp3", {loop: true});
 		});
 
 		//Pantalla final
 		Q.scene('endGame', function(stage) {
-
+			label_timer.hide();
 			var sprite = new Q.Sprite({ asset: "end.png", x: 400, y: 300, scale: 1 });
 			sprite.p.opacity=0;
 			sprite.add("tween");
