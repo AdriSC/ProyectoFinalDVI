@@ -231,6 +231,7 @@ var Q = window.Q = Quintus()
 				 scale: 1,
 				 sensor: true
 			 });
+			this.add("animation")
 			this.on('sensor', this, 'hit');
 			this.p.level;
 			this.p.points = [];
@@ -238,6 +239,7 @@ var Q = window.Q = Quintus()
 			this.p.points.push([35,-10]);
 			this.p.points.push([-35,-10]);
 			this.p.points.push([-30,45]);
+			this.anim();
 		},
 		hit: function(collision){
 			if(!collision.isA("SuperMeatBoy")) return;
@@ -263,6 +265,11 @@ var Q = window.Q = Quintus()
 			  	collision.destroy(); // destruye al MeatBoy
 			}
 			else Q.stageScene(this.p.level, 1);
+		},
+		
+		anim: function(p){
+			if (this.p.direction == "right") this.play("scare_right");
+			if (this.p.direction == "left") this.play("scare_left");
 		}
 	});
 
@@ -523,9 +530,9 @@ var Q = window.Q = Quintus()
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", //sprites
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json"], function() {
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json" "goal.json",], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -537,6 +544,7 @@ var Q = window.Q = Quintus()
 		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
 		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
 		Q.compileSheets("meat_boy_end.png", "meat_boy_end.json");
+		Q.compileSheets("goal.png", "goal.json");
 
 		
 		Q.animations("smb_anim", {
@@ -572,6 +580,11 @@ var Q = window.Q = Quintus()
 
 		Q.animations("sawDesAnim", {
 			destroySaw: { frames: [0,1,2,3,4], loop: false, rate: 1/10, trigger: "sawDess"}
+		});
+
+		Q.animations("goalAnim", {
+			scare_left: { frames: [0,1], loop: true, rate: 4/5},
+			scare_right: { frames: [3,4], loop: true, rate: 4/5}
 		});
 
 		//Estado que lleva el id de la llave activada en este momento
