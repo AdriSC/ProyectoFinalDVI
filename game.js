@@ -486,9 +486,6 @@ var Q = window.Q = Quintus()
 				this._super(p, {
 					 sheet: "modTilesObj",
 					 frame: 55,
-					 scale: 1,
-					 x: 20,
-					 y: -10,
 					 sensor: true
 				 });
 			}
@@ -500,9 +497,6 @@ var Q = window.Q = Quintus()
 				this._super(p, {
 					 sheet: "modTilesdark",
 					 frame: 55,
-					 scale: 1,
-					 x: 20, 
-					 y: -10,
 					 sensor: true
 				 });
 			}
@@ -512,14 +506,13 @@ var Q = window.Q = Quintus()
 			init: function(p) {
 				this._super(p, {
 					 sheet: "modTileslight",
-					 frame: 55,
-					 scale: 1
+					 frame: 55
 				 });
 			}
 		});
 
 	Q.load(["smb_anim.png", "smb_anim.json", 
-		 	"lvl_1.tmx", "lvl_2.tmx", //tmx
+		 	"lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", //tmx
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
@@ -617,6 +610,21 @@ var Q = window.Q = Quintus()
 			});
 
 			//Q.audio.play("Escape.mp3", {loop: true});
+		});
+
+		Q.scene("level4", function (stage){
+
+			Q.stageTMX("lvl_4.tmx", stage);
+		
+			smb = new Q.SuperMeatBoy({x: 195, y: 1350});
+			stage.insert(smb);
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1410, minY: 0, maxY: 1380});
+			stage.viewport.scale = .96;
+			stage.on("destroy",function() {
+				smb.destroy();
+			});
+
+			Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
 
 		//Timer
