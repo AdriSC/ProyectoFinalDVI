@@ -216,6 +216,7 @@ var Q = window.Q = Quintus()
 		kill: function(collision){
 				if(!collision.isA("SuperMeatBoy")) return;
 				collision.die();
+				Q.audio.play("SawDeath0.mp3"); // Saw.mp3
 				
 		}
 	});
@@ -298,6 +299,7 @@ var Q = window.Q = Quintus()
                         y: this.p.y,
                         scale: this.p.scale
                     }));
+			Q.audio.play("grass_scamper1.mp3"); // Sand.mp3
 			this.destroy();
 		}
 	});
@@ -357,6 +359,7 @@ var Q = window.Q = Quintus()
 				vy: p.saw_vy*50,
 				angle: p.angle
 			}))
+			Q.audio.play("Saw_Launcher 01.mp3"); // GenSaw.mp3
 		},
 		step: function(dt){
 			this.p.time += dt;
@@ -398,6 +401,7 @@ var Q = window.Q = Quintus()
 					y: this.p.y,
 					angle: Math.random() * 360
 				}));
+				Q.audio.play("saw_break0.mp3"); // SawDes.mp3
 				this.destroy();
 			}		
 		},
@@ -451,6 +455,7 @@ var Q = window.Q = Quintus()
 		unlock: function(){
 			if(Q.state.get("key") != this.p.ukey) return;
 			Q.state.set("key",this.p.tkey);
+			Q.audio.play("LockBreak0.mp3"); // Keyhole.mp3
 			this.animate({ scale: 0 }, 1.5, Q.Easing.Quadratic.Out, { callback: function(){ this.destroy(); } });
 		}
 	});
@@ -476,6 +481,7 @@ var Q = window.Q = Quintus()
 		pick: function(collision){
 			if(!collision.isA("SuperMeatBoy")) return;
 			Q.state.set("key",this.p.key);
+			Q.audio.play("KeyPickup_Gauntlet.mp3"); // key.mp3
 			this.destroy();
 		}
 	});
@@ -513,11 +519,12 @@ var Q = window.Q = Quintus()
 
 	Q.load(["smb_anim.png", "smb_anim.json", 
 		 	"lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", //tmx
-		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", //music
+		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", "SawDeath0.mp3", "Saw_Launcher 01.mp3", //music
+		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
-		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png",
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", 
-		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png",
+		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", //sprites
+		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
@@ -618,6 +625,10 @@ var Q = window.Q = Quintus()
 		
 			smb = new Q.SuperMeatBoy({x: 195, y: 1350});
 			stage.insert(smb);
+
+			minX = 25;
+			maxX = 1885;
+			minY = 18;
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1410, minY: 0, maxY: 1380});
 			stage.viewport.scale = .96;
 			stage.on("destroy",function() {
