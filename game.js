@@ -266,7 +266,7 @@ var Q = window.Q = Quintus()
 			}
 			else Q.stageScene(this.p.level, 1);
 		},
-		
+
 		anim: function(p){
 			if (this.p.direction == "right") this.play("scare_right");
 			if (this.p.direction == "left") this.play("scare_left");
@@ -525,7 +525,7 @@ var Q = window.Q = Quintus()
 		});
 
 	Q.load(["smb_anim.png", "smb_anim.json", 
-		 	"lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", //tmx
+		 	"lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", "lvl_boss.tmx",//tmx
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", "SawDeath0.mp3", "Saw_Launcher 01.mp3", //music
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
