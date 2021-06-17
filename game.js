@@ -17,8 +17,8 @@ var Q = window.Q = Quintus()
         
         init: function(p){
             this._super(p, {
-                sheet: "smb",
-                sprite: "smb_anim",
+                sheet: "meat_boy_end",
+                sprite: "meat_boy_end",
                 speed: 200,
                 frame: 0,
                 scale: 1,
@@ -536,6 +536,7 @@ var Q = window.Q = Quintus()
 		Q.compileSheets("sand.png", "sand.json");
 		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
 		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
+		Q.compileSheets("meat_boy_end.png", "meat_boy_end.json");
 
 		
 		Q.animations("smb_anim", {
@@ -548,6 +549,18 @@ var Q = window.Q = Quintus()
 			stand_right: { frames: [0], loop: false},
 			stand_left: { frames: [4], loop: false},
 			death: { frames: [12], loop: false, rate: 1}
+		});
+
+		Q.animations("meat_boy_end", {
+			walk_right: { frames: [9,10,11,10], rate: 1/6},
+			walk_left: { frames: [1,2,3,2], rate: 1/6},
+			jump_right: { frames: [13], rate: 1/6},
+			wall_right:{frames: [4], loop: false},
+			jump_left: { frames: [5], rate: 1/6},
+			wall_left:{frames: [12], loop: false},
+			stand_right: { frames: [8], loop: false},
+			stand_left: { frames: [0], loop: false},
+			death: { frames: [16], loop: false, rate: 1}
 		});
 
 		Q.animations("sand", {
