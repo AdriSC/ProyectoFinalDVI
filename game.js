@@ -82,10 +82,10 @@ var Q = window.Q = Quintus()
 				this.p.onWall = false;
 				this.p.vy = -300;
 				if(this.p.direction == 'right'){
-					this.p.vx = -500;
+					this.p.vx = -300;
 				}
 				else if(this.p.direction == 'left'){
-					this.p.vx = 500;
+					this.p.vx = 300;
 				}
 				
 			}
