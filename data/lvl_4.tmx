@@ -2948,7 +2948,7 @@
    <properties>
     <property name="direction" value="right"/>
     <property name="level" value="endGame"/>
-    <property name="scale" value="0.8"/>
+    <property name="scale" value="1"/>
    </properties>
   </object>
  </objectgroup>
