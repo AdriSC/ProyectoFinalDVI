@@ -29,7 +29,8 @@ Pulsando R en el teclado podemos resetear el mapa actual, evitando que nos quede
 Como "enemigo" principal encontramos las sierras, que puden ser estáticas, o presentar un movimiento horizontal, vertical, diagonal o angular.
 También pueden ser generadas y lanzadas a traves del escenario hasta que colisiones contra algo, en este caso se destruyen.
 
-
+Como último recurso, el malvado **Doctor Fetus** ha creado un robot con el que intentará acabar con **Meat Boy** y llevarse a **Bandage Girl** para siempre. ¡Huye de él! Quizas el
+robot acabe explotando...
 
 
 

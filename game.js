@@ -13,6 +13,7 @@ var Q = window.Q = Quintus()
 	       .touch();     
 var acumulador2 = 0;
 
+/*------------TECLA PARA REINICIAR NIVEL------------*/
 document.addEventListener('keydown', keyDownHandler, false);
 document.addEventListener('keyup', keyUpHandler, false);
 
@@ -26,7 +27,7 @@ function keyUpHandler(event) {
     if(event.keyCode == 82) reset = false; // R
 }
 
-	//Sprite personaje principal
+	/*------------SUPER MEAT BOY------------*/
 	Q.Sprite.extend("SuperMeatBoy",{
         
         init: function(p){
@@ -44,6 +45,8 @@ function keyUpHandler(event) {
 			this.on("jump");
     		this.on("jumped");
 			this.on("deathAnimTr", this, "death_aux");
+			
+			//Ajustar hitbox
 			this.p.points = [];
 			this.p.points.push([25,30]);
 			this.p.points.push([25,-15]);
@@ -51,6 +54,8 @@ function keyUpHandler(event) {
 			this.p.points.push([-28,30]);
         },
 
+		//Salto en muro
+		//La gravedad se reduce un poco para poder saltar mejor desde el muro
 		stick_on_wall: function(collision){
 			
 			this.p.onWall = true;
@@ -65,6 +70,7 @@ function keyUpHandler(event) {
 			}
 		},
 
+		//Sonido de salto
 		jump: function(obj) {
 			if (!obj.p.playedJump) {
 			  Q.audio.play("Meat_jumps0.mp3");
@@ -78,6 +84,9 @@ function keyUpHandler(event) {
 
         step: function(dt){
 
+			/*Hace que la velocidad de movimiento aumente progresivamente desde 200(velMin) a 500(velMax) 
+			También mantiene la inercia al dejar de pulsar la tecla. Esta reducción se realiza en 
+			quintus_imputs.js -> platformerControls (lineas 847 - 855)*/ 
 			if(Q.inputs['left']){
                 this.play("walk_left");
                 //aceleración izq
@@ -96,13 +105,16 @@ function keyUpHandler(event) {
                 
             }
 
+			//Salto desde muro. Separa a SMB ligeramente del muro
 			if(Q.inputs['up'] && this.p.onWall){
 				
 				this.p.onWall = false;
 				this.p.vy = -300;
+				//Si esta en un muro del lado izquierdo
 				if(this.p.direction == 'right'){
 					this.p.vx = -300;
 				}
+				//Si esta en un muro del lado derecho
 				else if(this.p.direction == 'left'){
 					this.p.vx = 300;
 				}
@@ -135,6 +147,7 @@ function keyUpHandler(event) {
 
 			Q.state.set("timer", dt);
 
+			//Al pulsar la tecla de reset, reinicia el nivel
 			if (reset){
 				this.destroy();
 				Q.stageScene(Q.stage(1).scene.name, 1);
@@ -143,6 +156,7 @@ function keyUpHandler(event) {
 
         },
 
+		//Realiza la animacion de muerte de SMB y reinicia el nivel cuando esta ha terminado
 		die: function(){
 			this.play("death", 1);	
         },
@@ -154,6 +168,7 @@ function keyUpHandler(event) {
 		}
     });
 
+	/*------------SIERRA------------*/
 	//Sierra que al ser golpeada por MeatBoy lo destruye
 	Q.Sprite.extend("Saw",{
 		init: function(p){
@@ -249,6 +264,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	/*------------BANDAGE GIRL(GOAL)------------*/
 	//Meta de los diversos mapas, al ser golpeada lanza una animacion, actualiza el timer y cambia de mapa
 	//si es el mapa final, lanza la pantalla de End Game en su lugar
 	Q.Sprite.extend("Goal",{
@@ -266,6 +282,8 @@ function keyUpHandler(event) {
 			this.add("animation")
 			this.on('sensor', this, 'hit');
 			this.p.level;
+
+			//Ajustar hitbox
 			this.p.points = [];
 			this.p.points.push([30,45]);
 			this.p.points.push([35,-10]);
@@ -331,38 +349,36 @@ function keyUpHandler(event) {
 		}
 	});
 
+	/*------------BOSS FINAL------------*/
 	Q.Sprite.extend("Boss", {
 		init: function(p){
 			this._super(p, {
 				sheet: "boss",
                 sprite: "boss",
 				frame: 0,
-				vx: 100
+				vx: 200
 			});
 
-		   // Enemies use the Bounce AI to change direction
-		   // whenver they run into something.
 		   this.add('2d, animation');
 		   this.on("bump.left,bump.right",this, "kill");
 		},
 
 		step: function(dt){
-			
 			this.play("walk_right_boss");
 			if(this.p.vx == 0){
 				this.play("death_boss");
 			}
 		},
-		
-		
+
 		kill: function(collision){
 			if(!collision.obj.isA("SuperMeatBoy")) return;
-				collision.obj.die();
-				//this.play("death_boss");
+			this.p.vx= 1;
+			collision.obj.die();
 		}
 
 	});
 
+	/*------------BLOQUES DE ARENA------------*/
 	//Arena que se destruye al ser golpeada por MeatBoy
 	Q.Sprite.extend("Sand",{
 		init: function(p){
@@ -430,6 +446,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	/*------------GENERADOR DE SIERRAS------------*/
 	//Objeto desde el que se generan sierras periodicamente, solo funciona si esta angulado en las 4 direcciones principales
 	//Para que funcione correctamente con Tiled, darle valor al campo angle: 0 || 90 || 180 || 270 y añadir campos saw_vx y saw_vy
 	//Tambien se puede añadir campo spawn para generar sierras mas rapido o lento
@@ -513,7 +530,7 @@ function keyUpHandler(event) {
 			this.p.angle += dt*1500;
 		}
 	});
-
+	
 	//Animacion de destruccion de la sierra generada
 	Q.Sprite.extend("SawDesAnim",{
 		init: function(p) {			
@@ -535,6 +552,8 @@ function keyUpHandler(event) {
 			this.destroy();
 		}
 	});
+
+	/*------------CERROJOS Y LLAVE------------*/
 
 	//Cerrojo que se desbloquea al coger la llave adecuada, puede tener un valor de llave para desbloquear varios cerrojos en cadena
 	//Para usar en Tiled, establecer campo ukey al valor de la key que lo activara y tkey para que active a su vez otra
@@ -632,17 +651,16 @@ function keyUpHandler(event) {
 			}
 		});
 
-	Q.load(["smb_anim.png", "smb_anim.json", 
-		 	"lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", "lvl_boss.tmx",//tmx
+	Q.load(["lvl_1.tmx", "lvl_2.tmx", "lvl_4.tmx", "lvl_boss.tmx",//tmx
 		    "WorldMapTheme.mp3", "ForestFunk.mp3", "Whip03.mp3", "Escape.mp3", "ChoirUnlock.mp3", "SawDeath0.mp3", "Saw_Launcher 01.mp3", //music
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", "goal.png", "boss.png", "bg_boss.png",//sprites
+		    "smb_anim.png", "smb_anim.json", "forestall.png", "forestdarkall.png", "foresttiles01bg.png", "goal.png", "boss.png", "bg_boss.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json", "boss.json"], function() {
 		
-		// Or from a .json asset that defines sprite locations
+		
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
 		Q.compileSheets("foresttiles01bg.png","modTiles1.json");
 		Q.compileSheets("foresttiles01Fix.png","modTiles2.json");
@@ -654,7 +672,7 @@ function keyUpHandler(event) {
 		Q.compileSheets("goal.png", "goal.json");
 		Q.compileSheets("boss.png", "boss.json");
 
-		
+		//Animaciones de SMB
 		Q.animations("meat_boy_end", {
 			walk_right: { frames: [9,10,11,10], rate: 1/6},
 			walk_left: { frames: [1,2,3,2], rate: 1/6},
@@ -667,11 +685,13 @@ function keyUpHandler(event) {
 			death: { frames: [16, 17, 18], rate: 1/14, loop: false, trigger: "deathAnimTr"}
 		});
 
+		//Animaciones del jefe final
 		Q.animations("boss", {
 			walk_right_boss: {frames: [0,1,2,3], rate: 1/6},
 			death_boss:{frames: [4], loop: false}
 		});
 
+		//Animacion de arena deshaciendose
 		Q.animations("sand", {
 			destroying: { frames: [0], next: 'bodyDes', rate: 1, trigger: "erase"},
 			bodyDes: { frames: [0], rate: 1/100, trigger: "erase"},
@@ -679,10 +699,12 @@ function keyUpHandler(event) {
 			destroyed: { frames: [11,12], rate: 1/10, loop:false, trigger: "erase2"}
 		});
 
+		//Animacion de destrucción de las sierras lanzadas por el generador de sierras
 		Q.animations("sawDesAnim", {
 			destroySaw: { frames: [0,1,2,3,4], loop: false, rate: 1/10, trigger: "sawDess"}
 		});
 
+		//Animaciones de Bandage Girl(Goal)
 		Q.animations("goalAnim", {
 			scare_left: { frames: [0,1], loop: true, rate: 4/5},
 			scare_right: { frames: [3,4], loop: true, rate: 4/5}
@@ -691,6 +713,7 @@ function keyUpHandler(event) {
 		//Estado que lleva el id de la llave activada en este momento
 		Q.state.reset({ key: -2, timer: "" });
 
+		/*------------NIVEL 1------------*/
 		Q.scene("level1", function (stage){
 		
 			Q.stageTMX("lvl_1.tmx", stage);
@@ -713,6 +736,7 @@ function keyUpHandler(event) {
 			Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
 
+		/*------------NIVEL 2------------*/
 		Q.scene("level2", function (stage){
 
 			Q.stageTMX("lvl_2.tmx", stage);
@@ -731,6 +755,7 @@ function keyUpHandler(event) {
 
 		});
 
+		/*------------NIVEL 3------------*/
 		Q.scene("level4", function (stage){
 			Q.state.reset({ key: -2});
 
@@ -750,20 +775,21 @@ function keyUpHandler(event) {
 
 		});
 
+		/*------------NIVEL FINAL------------*/
 		Q.scene("levelBoss", function (stage){
 			Q.stageTMX("lvl_boss.tmx", stage);
 			
-				smb = new Q.SuperMeatBoy({x: 162, y: 1379}); 
+				smb = new Q.SuperMeatBoy({x: 400, y: 1379}); 
 				stage.insert(smb);
 				
-				boss = new Q.Boss({});
+				boss = new Q.Boss({x: 25, y: 1379});
 				stage.insert(boss);
 
 				minX = 25;
-				maxX = 2975;
+				maxX = 3335;
 				minY = 18;
 
-				stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 2100, minY: 0, maxY: 1000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+				stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 2460, minY: 0, maxY: 1000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
 				
 				stage.viewport.scale = .7; //para acercar mas o menos la camara
 				stage.on("destroy",function() {
@@ -772,7 +798,7 @@ function keyUpHandler(event) {
 				});
 		});
 
-		//Timer
+		/*------------TIMER------------*/
 		Q.scene("timer", function(stage){
 			var time = 0;
 			containerTimer = stage.insert(new Q.UI.Container({
@@ -803,7 +829,7 @@ function keyUpHandler(event) {
 			});
 		});
 
-		//Pantalla principal
+		/*------------PANTALLA PRINCIPAL------------*/
 		Q.scene("mainTitle", function(stage){
 			var button = new Q.UI.Button({
 				x: Q.width/2,
@@ -829,7 +855,7 @@ function keyUpHandler(event) {
 			Q.audio.play("WorldMapTheme.mp3", {loop: true});
 		});
 
-		//Pantalla final
+		/*------------PANTALLA FINAL------------*/
 		Q.scene('endGame', function(stage) {
 			label_timer.p.y = -12;
 			var sprite = new Q.Sprite({ asset: "end.png", x: 400, y: 300, scale: 1 });
