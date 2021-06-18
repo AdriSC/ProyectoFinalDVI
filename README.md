@@ -8,14 +8,9 @@ Nuestro proyecto se basa en el videojuego llamado **Super Meat Boy**, realizado 
 
 
 ## 1. Diseño del juego
-
-
-
-
-
-
 ### 1.1. Objetivo del juego (cómo se gana, cómo se pierde)
 
+ Super Meat Boy es un juego de plataformas en el que Meat Boy tiene que rescatar Bandage Girl en cada mapa y superar los distintos obstaculos que se le presentan (sierras con dinámicas diferentes, tierra que se deshace, cerrojos que tiene que abri con llaves a lo largo de los mapas, enemigo final...). Tiene que superar todos estos obstáculos en cada mapa, pero si muere, vuelve a empezar en el nivel en el que se encuentra, no hay límite de vidas, tiene que conseguir llegar a su meta, Bandage Girl en todo momento.
 
 
 
@@ -61,7 +56,7 @@ Todo esto lo hemos podido trabajar en equipo y de manera síncrona gracias a **G
 
 ## 3. Equipo de trabajo y reparto de tareas (descripcíón y carga de trabajo)
 
-El trabajo lo repartimos de manera que pudieramos colaborar todos por igual. Ya que nos era muy dificil coincidir por los diferentes horarios, haciamos reuniones semanales para ir viendo que cosas iban surgiendo, dudas o propuestas entre nosotros. Pudimos trabajar individualmente y en grupo.
+El trabajo lo repartimos de manera que pudieramos colaborar todos por igual. Ya que nos era muy dificil coincidir por los diferentes horarios, hicimos reuniones semanales para ir viendo cosas que iban surgiendo, dudas o propuestas entre nosotros. Pudimos trabajar individualmente y en grupo.
 
 Para la primera entrega...
 
@@ -90,7 +85,7 @@ Y para la entrega final...
 - Llaves y Cerrojos
 - Tierra que se destruye
 
-A través de Discord y WhatsApp nos hemos comunicado y ayudado entre los 3. Muchas veces estabamos conectados si no eramos los 3, eramos 2 o si estabamos haciendo cosas de DVI, estaba uno mismo en el canal de Discord por si otro quería comunicarse o lo que necesitaramos.
+A través de Discord y WhatsApp nos hemos comunicado y ayudado entre los 3. Muchas veces estábamos conectados, si no éramos los 3, éramos 2 o si estabamos haciendo cosas de DVI, estaba uno mismo en el canal de Discord por si otro quería comunicarse o lo que necesitaramos. Sergio ha estado muy implicado en todo momento y en todas las fases del videojuego, trabajando y resolviendo contratiempos que han ido surgiendo.
 
 
 
