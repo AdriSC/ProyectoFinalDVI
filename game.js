@@ -854,7 +854,7 @@ function keyUpHandler(event) {
         		.animate({ x: 660, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
 		});
 
-		Q.debug = true;
+		//Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});

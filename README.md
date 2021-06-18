@@ -20,7 +20,14 @@ Nuestro proyecto se basa en el videojuego llamado **Super Meat Boy**, realizado 
 
 Meat Boy, nuestro jugador, tiene un movimiento con aceleración que es lo característico de él. Puede saltar de forma normal como saltar contra la pared para poder impulsarse aún más. También puede deslizarse contra ella.
 
+Además existen bloques de tierra que se destruyen al poco de que MeatBoy los toque.
+
 Por otro lado, si hablamos de las distintas llaves que aparecen en los mapas, Meat Boy puede cogerlas para abrir los cerrojos que pueda haber en el nivel en el que se encuentra.
+
+Pulsando R en el teclado podemos resetear el mapa actual, evitando que nos quedemos atascados.
+
+Como "enemigo" principal encontramos las sierras, que puden ser estáticas, o presentar un movimiento horizontal, vertical, diagonal o angular.
+También pueden ser generadas y lanzadas a traves del escenario hasta que colisiones contra algo, en este caso se destruyen.
 
 
 
