@@ -675,7 +675,7 @@ var acumulador2 = 0;
 				smb.destroy();
 			});
 
-			Q.audio.play("ForestFunk.mp3", {loop: true});
+			//Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
 
 		//Timer
