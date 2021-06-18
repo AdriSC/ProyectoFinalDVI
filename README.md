@@ -4,6 +4,9 @@ Nuestro proyecto se basa en el videojuego llamado **Super Meat Boy**, realizado 
 
 
 
+
+
+
 ## 1. Diseño del juego
 
 
@@ -17,6 +20,7 @@ Nuestro proyecto se basa en el videojuego llamado **Super Meat Boy**, realizado 
 
 
 
+
 ### 1.2. Principales mecánicas
 
 Meat Boy, nuestro jugador, tiene un movimiento con aceleración que es lo característico de él. Puede saltar de forma normal como saltar contra la pared para poder impulsarse aún más. También puede deslizarse contra ella.
@@ -25,9 +29,16 @@ Por otro lado, si hablamos de las distintas llaves que aparecen en los mapas, Me
 
 
 
+
+
+
 ### 1.3. Personajes
+
 Tenemos 3 personajes principales, **Meat Boy**, que es un cubo de color rojizo; **Bandage Girl**, la chica que Meat Boy quiere rescatar, que también es un cubo pero de color rosa. Y el malvado **Doctor Fetus**, que es el que ha secuestrado a Bandage Girl. 
 	
+
+
+
 
 
 ## 2. Diseño de la implementación (arquitectura y principales componentes)
@@ -42,6 +53,9 @@ Por otro lado, los diferentes mapas que hemos creado han sido en **Tiled**, un e
 La edición de imágenes ha sido algo muy recurrente a lo largo de la práctica y vimos que **MediBang** y **GIMP** nos ayudaban un montón en esta parte.
 
 Todo esto lo hemos podido trabajar en equipo y de manera síncrona gracias a **Git**, lo cual nos ha permitido tener un buen registro de los cambios que hacíamos y tener un trabajo más estructurado. 
+
+
+
 
 
 
@@ -82,7 +96,9 @@ A través de Discord y WhatsApp nos hemos comunicado y ayudado entre los 3. Much
 
 
 
+
 ## 4. Fuentes y referencias
+
 Gracias a estas fuentes hemos podido recopilar todo lo necesario para poder realizar esta práctica, tanto ayuda para poder programar correctamente como material para el videojuego:
 
 * https://es.wikipedia.org/wiki/Super_Meat_Boy
