@@ -31,6 +31,11 @@ var acumulador2 = 0;
 			this.on("jump");
     		this.on("jumped");
 			this.on("deathAnimTr", this, "death_aux");
+			this.p.points = [];
+			this.p.points.push([25,30]);
+			this.p.points.push([25,-15]);
+			this.p.points.push([-28,-15]);
+			this.p.points.push([-28,30]);
         },
 
 		stick_on_wall: function(collision){
@@ -425,7 +430,7 @@ var acumulador2 = 0;
 			this.on('hit', this, 'die');
 		},
 		die: function(collision){
-			if(collision.obj.isA("SawGenerator")) return;
+			if(collision.obj.isA("SawGenerator") || collision.obj.isA("Key")) return;
 			if(!this.kill){
 				this.kill = true;
 				if(collision.obj.isA("SuperMeatBoy")) collision.obj.die();
@@ -488,9 +493,9 @@ var acumulador2 = 0;
 		},
 		unlock: function(){
 			if(Q.state.get("key") != this.p.ukey) return;
-			Q.state.set("key",this.p.tkey);
+			
 			Q.audio.play("LockBreak0.mp3"); // Keyhole.mp3
-			this.animate({ scale: 0 }, 1.5, Q.Easing.Quadratic.Out, { callback: function(){ this.destroy(); } });
+			this.animate({ scale: 0 }, 0.8, Q.Easing.Quadratic.Out, { callback: function(){ Q.state.set("key",this.p.tkey); this.destroy(); } });
 		}
 	});
 
@@ -526,8 +531,13 @@ var acumulador2 = 0;
 				this._super(p, {
 					 sheet: "modTilesObj",
 					 frame: 55,
-					 sensor: true
+					 sensor: true,
+					 rot: false
 				 });
+			},
+			step: function(dt){
+				if(!this.p.rot) return;
+				this.p.angle += dt*143.3;
 			}
 		});
 
@@ -557,7 +567,7 @@ var acumulador2 = 0;
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png",//sprites
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png", "bg_boss.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json"], function() {
 		
@@ -619,15 +629,22 @@ var acumulador2 = 0;
 
 		Q.scene("level1", function (stage){
 		
-			Q.stageTMX("lvl_1.tmx", stage);
+			Q.stageTMX("lvl_boss.tmx", stage);
 		
-			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
+			//smb = new Q.SuperMeatBoy({x: 202, y: 1124}); // The good one
+			smb = new Q.SuperMeatBoy({x: 2050, y: 1150}); 
 			stage.insert(smb);
-			
+			/*
 			minX = 25;
 			maxX = 1885;
+			minY = 18;*/
+			minX = 25;
+			maxX = 80000;
 			minY = 18;
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+			//The Good One
+			//stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1000000000, minY: 0, maxY: 10000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+			
 			stage.viewport.scale = .7; //para acercar mas o menos la camara
 			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
@@ -803,7 +820,7 @@ var acumulador2 = 0;
         		.animate({ x: 660, y:  550, opacity:1 }, 1.5, Q.Easing.Quadratic.InOut)
 		});
 
-		//Q.debug = true;
+		Q.debug = true;
 		Q.stageScene("mainTitle");
 
 	});
