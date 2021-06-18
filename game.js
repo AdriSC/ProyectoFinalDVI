@@ -629,21 +629,15 @@ var acumulador2 = 0;
 
 		Q.scene("level1", function (stage){
 		
-			Q.stageTMX("lvl_boss.tmx", stage);
+			Q.stageTMX("lvl_1.tmx", stage);
 		
-			//smb = new Q.SuperMeatBoy({x: 202, y: 1124}); // The good one
-			smb = new Q.SuperMeatBoy({x: 2050, y: 1150}); 
+			smb = new Q.SuperMeatBoy({x: 202, y: 1124});
 			stage.insert(smb);
-			/*
+			
 			minX = 25;
 			maxX = 1885;
-			minY = 18;*/
-			minX = 25;
-			maxX = 80000;
 			minY = 18;
-			//The Good One
-			//stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1000000000, minY: 0, maxY: 10000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
 			
 			stage.viewport.scale = .7; //para acercar mas o menos la camara
 			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
@@ -677,6 +671,7 @@ var acumulador2 = 0;
 		});
 
 		Q.scene("level4", function (stage){
+			Q.state.reset({ key: -2});
 
 			Q.stageTMX("lvl_4.tmx", stage);
 		
@@ -693,6 +688,26 @@ var acumulador2 = 0;
 			});
 
 			//Q.audio.play("ForestFunk.mp3", {loop: true});
+		});
+
+		Q.scene("levelBoss", function (stage){
+			Q.stageTMX("lvl_boss.tmx", stage);
+			
+				smb = new Q.SuperMeatBoy({x: 162, y: 1379}); 
+				stage.insert(smb);
+				
+				minX = 25;
+				maxX = 2975;
+				minY = 18;
+
+				stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 2100, minY: 0, maxY: 1000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
+				
+				stage.viewport.scale = .7; //para acercar mas o menos la camara
+				//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
+				stage.on("destroy",function() {
+					smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
+
+				});
 		});
 
 		//Timer

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="50" height="24" tilewidth="60" tileheight="60" infinite="0" nextlayerid="11" nextobjectid="33">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="50" height="24" tilewidth="60" tileheight="60" infinite="0" nextlayerid="11" nextobjectid="36">
  <tileset firstgid="1" name="foresttiles01Fix" tilewidth="60" tileheight="60" tilecount="100" columns="10">
   <image source="../images/foresttiles01Fix.png" width="600" height="600"/>
  </tileset>
@@ -2781,6 +2781,12 @@
   <object id="6" gid="101" x="2400" y="1260" width="67" height="98"/>
   <object id="7" gid="101" x="2400" y="1200" width="67" height="98"/>
   <object id="8" gid="101" x="2400" y="1140" width="67" height="98"/>
+  <object id="35" gid="129" x="2922.73" y="965.152" width="100" height="100">
+   <properties>
+    <property name="direction" value="left"/>
+    <property name="level" value="endGame"/>
+   </properties>
+  </object>
  </objectgroup>
  <layer id="1" name="Colision" width="50" height="24">
   <properties>
