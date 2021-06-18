@@ -11,6 +11,7 @@ var Q = window.Q = Quintus()
 	       })
 	       .controls().enableSound()
 	       .touch();     
+var acumulador2 = 0;
 
 	//Sprite personaje principal
 	Q.Sprite.extend("SuperMeatBoy",{
@@ -250,23 +251,44 @@ var Q = window.Q = Quintus()
 
 			this.destroy();
       		var level = this.p.level;
+      		acumulador2 += acumulador;
 
 			if(this.p.level != "endGame"){ //transicion entre escena y escena
+				if(this.p.level != "X"){
+					containerTimer
+			      		.animate({x:Q.width/2 - 100, y: Q.width/2 - 115, opacity: 1}, .5, Q.Easing.Quadratic.InOut)
+			  	}
 				var sprite = new Q.Sprite({ asset: "sierra_negra.png", x: this.stage.viewport.centerX, y: this.stage.viewport.centerY, scale: 1, type: 0 });
 				sprite.p.opacity=0;
 				sprite.add("tween");
 	      		this.stage.insert(sprite);
 	      		sprite
-			        .animate({ opacity: 1 }, .0001, Q.Easing.Quadratic.InOut)
-			       // .chain({ angle: 360}, .5)
-	      			.chain({  scale: 20, angle: 900}, .5, Q.Easing.Quadratic.In,
+			        .animate({ opacity: 0, scale: 0 }, .4, Q.Easing.Quadratic.In)
+	      			.chain({  scale: 20, angle: 900, opacity: 10}, 1, Q.Easing.Quadratic.InOut,
 	      			 	   {callback: function(){
 						 		  				Q.stageScene(level, 1);
 						 		  				Q.stageScene("timer", 2);
 					}})
 			  	collision.destroy(); // destruye al MeatBoy
 			}
-			else Q.stageScene(this.p.level, 1);
+			else{
+				Q.stageScene(this.p.level, 1);
+				var ms = acumulador2*1000;
+				var s = ms/1000;
+				var m = s/60;
+		        m = Math.floor(m);
+		        s = Math.floor(s) - m*60;
+		        ms = Math.floor(ms) - m*60000 - s*1000;
+
+		        while (ms.toString().length < 3)
+    				ms = '0' + ms;
+		      	while (s.toString().length < 2)
+    				s = '0' + s;
+		       	while (m.toString().length < 2)
+    				m = '0' + m;
+
+				label_timer.p.label = "Total time \n" + m + " : " + s + " : " + ms;
+			}
 		},
 
 		anim: function(p){
@@ -534,7 +556,7 @@ var Q = window.Q = Quintus()
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json",], function() {
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -644,8 +666,8 @@ var Q = window.Q = Quintus()
 			minX = 25;
 			maxX = 1885;
 			minY = 18;
-			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1410, minY: 0, maxY: 1380});
-			stage.viewport.scale = .96;
+			stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1010, minY: 0, maxY: 1010});
+			stage.viewport.scale = .7;
 			stage.on("destroy",function() {
 				smb.destroy();
 			});
@@ -656,10 +678,16 @@ var Q = window.Q = Quintus()
 		//Timer
 		Q.scene("timer", function(stage){
 			var time = 0;
-			label_timer = new Q.UI.Text({x:100, y:0, label: "00 : 00 : 00"});
-			stage.insert(label_timer);
+			containerTimer = stage.insert(new Q.UI.Container({
+				x: -2.5, y: 25, fill: "rgba(255, 255, 255)"
+			}));
+
+			label_timer = containerTimer.insert(new Q.UI.Text({x:100, y:0, label: "00 : 00 : 00"}));
+			containerTimer.fit(20);
+			containerTimer.add("tween");
 			Q.state.on("change.timer", this, function(){
 				time += Q.state.get("timer");
+				acumulador = time;
 				var ms = time*1000;
 				var s = ms/1000;
 				var m = s/60;
@@ -667,17 +695,14 @@ var Q = window.Q = Quintus()
 		        s = Math.floor(s) - m*60;
 		        ms = Math.floor(ms) - m*60000 - s*1000;
 
-		        while (ms.toString().length < 3){
+		        while (ms.toString().length < 3)
     				ms = '0' + ms;
-		        }
-		      	while (s.toString().length < 2){
+		      	while (s.toString().length < 2)
     				s = '0' + s;
-		        }
-		       	while (m.toString().length < 2){
+		       	while (m.toString().length < 2)
     				m = '0' + m;
-		        }
+
 				label_timer.p.label = m + " : " + s + " : " + ms;
-;
 			});
 		});
 
@@ -709,7 +734,7 @@ var Q = window.Q = Quintus()
 
 		//Pantalla final
 		Q.scene('endGame', function(stage) {
-			label_timer.hide();
+			label_timer.p.y = -12;
 			var sprite = new Q.Sprite({ asset: "end.png", x: 400, y: 300, scale: 1 });
 			sprite.p.opacity=0;
 			sprite.add("tween");
@@ -718,7 +743,7 @@ var Q = window.Q = Quintus()
 		        .animate({ x: 400, y:  300, opacity:1 }, 1, Q.Easing.Quadratic.InOut)
 
 			var container = stage.insert(new Q.UI.Container({
-				x: Q.width/2, y: Q.height/2, fill: "rgba(255, 127, 80, 0.8)" , border: 2
+				x: Q.width/2, y: Q.height/2, fill: "rgba(255, 127, 72, 0.9)" , border: 2
 			}));
 
 			var button2 = container.insert(new Q.UI.Button({
@@ -733,13 +758,14 @@ var Q = window.Q = Quintus()
 			button2.on("click",function() {
 				Q.clearStages();
 				Q.audio.stop();
+				acumulador2 = 0;
 				Q.stageScene('mainTitle');
 			});
 
 			container.fit(20);
 			container.add("tween");
 			container
-        		.animate({ x: 398, y:  370, opacity:1 }, 1, Q.Easing.Quadratic.InOut)
+        		.animate({ x: 394, y:  370, opacity:1 }, 1, Q.Easing.Quadratic.InOut)
 
 			Q.audio.play("ChoirUnlock.mp3");
 
