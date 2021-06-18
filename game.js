@@ -374,6 +374,7 @@ function keyUpHandler(event) {
 			if(!collision.obj.isA("SuperMeatBoy")) return;
 			this.p.vx= 1;
 			collision.obj.die();
+			Q.audio.play("SawDeath0.mp3");
 		}
 
 	});
