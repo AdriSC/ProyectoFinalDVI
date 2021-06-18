@@ -330,6 +330,38 @@ function keyUpHandler(event) {
 		}
 	});
 
+	Q.Sprite.extend("Boss", {
+		init: function(p){
+			this._super(p, {
+				sheet: "boss",
+                sprite: "boss",
+				frame: 0,
+				vx: 100
+			});
+
+		   // Enemies use the Bounce AI to change direction
+		   // whenver they run into something.
+		   this.add('2d, animation');
+		   this.on("bump.left,bump.right",this, "kill");
+		},
+
+		step: function(dt){
+			
+			this.play("walk_right_boss");
+			if(this.p.vx == 0){
+				this.play("death_boss");
+			}
+		},
+		
+		
+		kill: function(collision){
+			if(!collision.obj.isA("SuperMeatBoy")) return;
+				collision.obj.die();
+				//this.play("death_boss");
+		}
+
+	});
+
 	//Arena que se destruye al ser golpeada por MeatBoy
 	Q.Sprite.extend("Sand",{
 		init: function(p){
@@ -605,9 +637,9 @@ function keyUpHandler(event) {
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", "goal.png", "bg_boss.png",//sprites
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", "goal.png", "boss.png", "bg_boss.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json"], function() {
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json", "boss.json"], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
@@ -619,6 +651,7 @@ function keyUpHandler(event) {
 		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
 		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
 		Q.compileSheets("goal.png", "goal.json");
+		Q.compileSheets("boss.png", "boss.json");
 
 		
 		Q.animations("meat_boy_end", {
@@ -631,6 +664,11 @@ function keyUpHandler(event) {
 			stand_right: { frames: [8], loop: false},
 			stand_left: { frames: [0], loop: false},
 			death: { frames: [16, 17, 18], rate: 1/14, loop: false, trigger: "deathAnimTr"}
+		});
+
+		Q.animations("boss", {
+			walk_right_boss: {frames: [0,1,2,3], rate: 1/6},
+			death_boss:{frames: [4], loop: false}
 		});
 
 		Q.animations("sand", {
@@ -717,6 +755,9 @@ function keyUpHandler(event) {
 				smb = new Q.SuperMeatBoy({x: 162, y: 1379}); 
 				stage.insert(smb);
 				
+				boss = new Q.Boss({});
+				stage.insert(boss);
+
 				minX = 25;
 				maxX = 2975;
 				minY = 18;
@@ -777,7 +818,7 @@ function keyUpHandler(event) {
 					 		  {callback: function(){
 					 		  				Q.clearStages();
 					 		  				Q.audio.stop();
-					 		  				Q.stageScene("level1", 1); //va a la capa del fondo
+					 		  				Q.stageScene("levelBoss", 1); //va a la capa del fondo
 					 		  				Q.stageScene("timer", 2);}})
 			});
 			stage.insert(button);
