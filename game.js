@@ -845,7 +845,7 @@ function keyUpHandler(event) {
 					 		  {callback: function(){
 					 		  				Q.clearStages();
 					 		  				Q.audio.stop();
-					 		  				Q.stageScene("levelBoss", 1); //va a la capa del fondo
+					 		  				Q.stageScene("level1", 1); //va a la capa del fondo
 					 		  				Q.stageScene("timer", 2);}})
 			});
 			stage.insert(button);
