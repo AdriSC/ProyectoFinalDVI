@@ -293,9 +293,10 @@ function keyUpHandler(event) {
 				var sprite = new Q.Sprite({ asset: "sierra_negra.png", x: this.stage.viewport.centerX, y: this.stage.viewport.centerY, scale: 1, type: 0 });
 				sprite.p.opacity=0;
 				sprite.add("tween");
+				
 	      		this.stage.insert(sprite);
 	      		sprite
-			        .animate({ opacity: 0, scale: 0 }, .4, Q.Easing.Quadratic.In)
+			        .animate({ opacity: 0, scale: 0 }, .4, Q.Easing.Quadratic.In, {callback: function(){Q.audio.play("SawDeath0.mp3");}})
 	      			.chain({  scale: 20, angle: 900, opacity: 10}, 1, Q.Easing.Quadratic.InOut,
 	      			 	   {callback: function(){
 						 		  				Q.stageScene(level, 1);
