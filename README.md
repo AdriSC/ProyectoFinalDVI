@@ -104,7 +104,7 @@ A través de Discord y WhatsApp nos hemos comunicado y ayudado entre los 3. Much
 
 
 ## 4. Demo del juego final
-Aquí esta la demo de la versión final: https://www.youtube.com/watch?v=4L0x40davmY
+Aquí está la demo de la versión final: https://www.youtube.com/watch?v=4L0x40davmY
 
 
 
