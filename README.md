@@ -67,14 +67,18 @@ El trabajo lo repartimos de manera que pudieramos colaborar todos por igual. Ya 
 
 Para la primera entrega...
 
+En conjunto desarrollamos el juego base sobre el que aplicar las nuevas mecánicas, así contábamos con un MeatBoy con un movimiento mas burdo
+y capaz de saltar desde las paredes y el suelo, y sierras estáticas como obstaculos mortales para MeatBoy.
+También hicimos un par de mapas con diversas capas, que no colisionaban, y la capa principal en la que se movía MeatBoy.
+Además incluimos una pantalla de inicio y de final.
 
 
 Y para la entrega final...
 
 **Adrián**:
 - El Boss
-- Mapa Boss
 - Velocidad de movimiento y salto de MeatBoy
+- Animación de muerte de MeatBoy
 
 **Miriam**: 
 - Bordes del mapa
@@ -88,9 +92,11 @@ Y para la entrega final...
 - Sprites del MeatBoy y Bandage Girl mejorados
 - Sierras que se generan y se mueven en bucle (vertical, horizontal y angular)
 - Generadores de sierras
-- Mapa 3
+- Mapa Boss
+- Mapa 4
 - Llaves y Cerrojos
 - Tierra que se destruye
+- Animación de BandageGirl
 
 A través de Discord y WhatsApp nos hemos comunicado y ayudado entre los 3. Muchas veces estábamos conectados, si no éramos los 3, éramos 2 o si estabamos haciendo cosas de DVI, estaba uno mismo en el canal de Discord por si otro quería comunicarse o lo que necesitaramos. Sergio ha estado muy implicado en todo momento y en todas las fases del videojuego, trabajando y resolviendo contratiempos que han ido surgiendo.
 

@@ -53,7 +53,6 @@ function keyUpHandler(event) {
 
 		stick_on_wall: function(collision){
 			
-			//if(collision.obj.isA("Goal")) return;
 			this.p.onWall = true;
 			this.p.gravity = .5;
 			if(collision.normalX == 1 && collision.normalY == 0){
@@ -155,6 +154,7 @@ function keyUpHandler(event) {
 		}
     });
 
+	//Sierra que al ser golpeada por MeatBoy lo destruye
 	Q.Sprite.extend("Saw",{
 		init: function(p){
 			this._super(p, {
@@ -175,8 +175,8 @@ function keyUpHandler(event) {
 			if(p.movex > 0) this.right = true;
 			if(p.movey > 0) this.down = true;
 			
-			//points in a circle from 0 to 15, where x: 2r / (nump / 2) and y: sqrt( sqr(r) - sqr(x)), 
-			//this solve the first half, negative values on an inverse order for the second half
+			//Puntos en un circulo desde 0 a 15, donde x: 2r / (nump / 2) e y: sqrt( sqr(r) - sqr(x)), 
+			//esto soluciona la primera mitad del circulo, los valores negativos en orden inverso son para la segunda mitad
 			for(var i = 0; i < 16; i++) {
 		        if(i<8) this.p.points.push([((100/8)*i)-50, Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*i)-50),2))]);
 		    	if(i>=8) this.p.points.push([((100/8)*(i-(2*(i-8))))-50, (-1)*Math.sqrt(Math.pow(50,2)-Math.pow((((100/8)*(i-(2*(i-8))))-50),2))]);
@@ -249,6 +249,8 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Meta de los diversos mapas, al ser golpeada lanza una animacion, actualiza el timer y cambia de mapa
+	//si es el mapa final, lanza la pantalla de End Game en su lugar
 	Q.Sprite.extend("Goal",{
 		init: function(p){
 			this._super(p, {
@@ -271,6 +273,9 @@ function keyUpHandler(event) {
 			this.p.points.push([-30,45]);
 			this.anim();
 		},
+		//En caso de colisionar MeatBoy con BandageGirl actualizamos el acumulador para el timer final,
+		//eliminamos a MeatBoy para evitar que el usuario se mueva,
+		//lanzamos la animacion de transicion y finalmente cambiamos la escena
 		hit: function(collision){
 			if(!collision.isA("SuperMeatBoy")) return;
 				
@@ -298,6 +303,7 @@ function keyUpHandler(event) {
 					}})
 			  	collision.destroy(); // destruye al MeatBoy
 			}
+			//En caso de ser el ultimo nivel calculamos y mostramos el timer acumulado
 			else{
 				Q.stageScene(this.p.level, 1);
 				var ms = acumulador2*1000;
@@ -324,6 +330,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Arena que se destruye al ser golpeada por MeatBoy
 	Q.Sprite.extend("Sand",{
 		init: function(p){
 			this._super(p, {
@@ -345,6 +352,8 @@ function keyUpHandler(event) {
 			this.p.points.push([33.5,15]);
 			
 		},
+		//En caso de que MeatBoy colisione con el bloque de arena despues de un qequeño delay lo destruimos
+		//para quitarnos la malla de colision y creamos un nuevo objeto sin colision en el que animamos la destruccion
 		anim: function(collision){
 			if(!collision.obj.isA("SuperMeatBoy")) return;
 			if(this.animated) return;
@@ -362,6 +371,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Objeto donde se anima la destruccion de la arena
 	Q.Sprite.extend("SandDes",{
 		init: function(p){
 			this._super(p, {
@@ -387,6 +397,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Objeto desde el que se generan sierras periodicamente, solo funciona si esta angulado en las 4 direcciones principales
 	//Para que funcione correctamente con Tiled, darle valor al campo angle: 0 || 90 || 180 || 270 y añadir campos saw_vx y saw_vy
 	//Tambien se puede añadir campo spawn para generar sierras mas rapido o lento
 	Q.Sprite.extend("SawGenerator",{
@@ -429,6 +440,8 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Objeto sierra con la cualidad de destruirse si colisiona contra algo que no sea el propio generador o una llave,
+	//al destruirse generamos una animacion
 	Q.Sprite.extend("SawDes",{
 		init: function(p){
 			this._super(p, {
@@ -468,6 +481,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Animacion de destruccion de la sierra generada
 	Q.Sprite.extend("SawDesAnim",{
 		init: function(p) {			
 			this._super(p, {			 
@@ -489,6 +503,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Cerrojo que se desbloquea al coger la llave adecuada, puede tener un valor de llave para desbloquear varios cerrojos en cadena
 	//Para usar en Tiled, establecer campo ukey al valor de la key que lo activara y tkey para que active a su vez otra
 	Q.Sprite.extend("Keyhole",{
 		init: function(p){
@@ -518,6 +533,7 @@ function keyUpHandler(event) {
 		}
 	});
 
+	//Llave que al ser recogida desbloquea el/los cerrojos con el mismo valos de llave
 	//Para usar en Tiled, establecer campo key al valor de la key que va a activar
 	Q.Sprite.extend("Key",{
 		init: function(p){
@@ -544,6 +560,9 @@ function keyUpHandler(event) {
 		}
 	});
 
+
+	//3 objetos para el correcto dibujado de los mapas, con ellos puedo crear superficies anguladas u objetos no interactuables
+	//con cualquier angulo y tamaño
 	Q.Sprite.extend("ModTilesObj",{
 			init: function(p) {
 				
@@ -586,7 +605,7 @@ function keyUpHandler(event) {
 		    "saw_break0.mp3", "LockBreak0.mp3", "KeyPickup_Gauntlet.mp3", "grass_scamper1.mp3", //music
 			"Meat_jumps0.mp3", "Meat_Landing0.mp3", "Meat_Landing1.mp3", //sound effects
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
-		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png", "bg_boss.png",//sprites
+		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png", "goal.png", "bg_boss.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
 		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json"], function() {
 		
@@ -599,22 +618,9 @@ function keyUpHandler(event) {
 		Q.compileSheets("sand.png", "sand.json");
 		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
 		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
-		//Q.compileSheets("meat_boy_end.png", "meat_boy_end.json");
 		Q.compileSheets("goal.png", "goal.json");
 
 		
-		/*Q.animations("smb_anim", {
-			walk_right: { frames: [1,2,3], rate: 1/6},
-			walk_left: { frames: [5,6,7], rate: 1/6},
-			jump_right: { frames: [8], rate: 1/6},
-			wall_right:{frames: [9], loop: false},
-			jump_left: { frames: [10], rate: 1/6},
-			wall_left:{frames: [11], loop: false},
-			stand_right: { frames: [0], loop: false},
-			stand_left: { frames: [4], loop: false},
-			death: { frames: [12], loop: false, rate: 1}
-		});*/
-
 		Q.animations("meat_boy_end", {
 			walk_right: { frames: [9,10,11,10], rate: 1/6},
 			walk_left: { frames: [1,2,3,2], rate: 1/6},
@@ -659,7 +665,6 @@ function keyUpHandler(event) {
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:1, maxX: 1340, minY: 0, maxY: 880}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
 			
 			stage.viewport.scale = .7; //para acercar mas o menos la camara
-			//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 			stage.on("destroy",function() {
 				smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
 
@@ -681,12 +686,10 @@ function keyUpHandler(event) {
 			minY = 18;
 			stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 1340, minY: 0, maxY: 1000});
 			stage.viewport.scale = .7;
-			//stage.viewport.offsetX = -250;
 			stage.on("destroy",function() {
 				smb.destroy();
 			});
 
-			//Q.audio.play("Escape.mp3", {loop: true});
 		});
 
 		Q.scene("level4", function (stage){
@@ -706,7 +709,6 @@ function keyUpHandler(event) {
 				smb.destroy();
 			});
 
-			//Q.audio.play("ForestFunk.mp3", {loop: true});
 		});
 
 		Q.scene("levelBoss", function (stage){
@@ -722,7 +724,6 @@ function keyUpHandler(event) {
 				stage.add("viewport").follow(smb,{x: true, y: true},{minX:0, maxX: 2100, minY: 0, maxY: 1000}); //la camara sigue a smb, AQUI SE MODIFICA LA CAMARA
 				
 				stage.viewport.scale = .7; //para acercar mas o menos la camara
-				//stage.viewport.offsetX = -250; //para colocar a mario mas a la izquierda del centro
 				stage.on("destroy",function() {
 					smb.destroy(); //para cuando salimos de la escena ya no reciba mas eventos de teclado
 
