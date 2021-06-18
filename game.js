@@ -30,6 +30,7 @@ var acumulador2 = 0;
 			this.on("bump.left, bump.right", this, "stick_on_wall");
 			this.on("jump");
     		this.on("jumped");
+			this.on("deathAnimTr", this, "death_aux");
         },
 
 		stick_on_wall: function(collision){
@@ -120,12 +121,14 @@ var acumulador2 = 0;
         },
 
 		die: function(){
-			//this.play("death");
+			this.play("death", 1);	
+        },
+
+		death_aux: function(p){
 			this.destroy();
-			//Q.audio.stop();
 			Q.stageScene(Q.stage(1).scene.name, 1);
 			Q.stageScene("timer", 2);
-        }
+		}
     });
 
 	Q.Sprite.extend("Saw",{
@@ -567,11 +570,11 @@ var acumulador2 = 0;
 		Q.compileSheets("sand.png", "sand.json");
 		Q.compileSheets("sawGenerator.png", "sawGenerator.json");
 		Q.compileSheets("sawDesAnim.png", "sawDesAnim.json");
-		Q.compileSheets("meat_boy_end.png", "meat_boy_end.json");
+		//Q.compileSheets("meat_boy_end.png", "meat_boy_end.json");
 		Q.compileSheets("goal.png", "goal.json");
 
 		
-		Q.animations("smb_anim", {
+		/*Q.animations("smb_anim", {
 			walk_right: { frames: [1,2,3], rate: 1/6},
 			walk_left: { frames: [5,6,7], rate: 1/6},
 			jump_right: { frames: [8], rate: 1/6},
@@ -581,7 +584,7 @@ var acumulador2 = 0;
 			stand_right: { frames: [0], loop: false},
 			stand_left: { frames: [4], loop: false},
 			death: { frames: [12], loop: false, rate: 1}
-		});
+		});*/
 
 		Q.animations("meat_boy_end", {
 			walk_right: { frames: [9,10,11,10], rate: 1/6},
@@ -592,7 +595,7 @@ var acumulador2 = 0;
 			wall_left:{frames: [12], loop: false},
 			stand_right: { frames: [8], loop: false},
 			stand_left: { frames: [0], loop: false},
-			death: { frames: [16], loop: false, rate: 1}
+			death: { frames: [16, 17, 18], rate: 1/14, loop: false, trigger: "deathAnimTr"}
 		});
 
 		Q.animations("sand", {
