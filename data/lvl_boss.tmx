@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="50" height="24" tilewidth="60" tileheight="60" infinite="0" nextlayerid="11" nextobjectid="36">
+<map version="1.5" tiledversion="1.5.0" orientation="orthogonal" renderorder="right-down" width="50" height="24" tilewidth="60" tileheight="60" infinite="0" nextlayerid="11" nextobjectid="44">
  <tileset firstgid="1" name="foresttiles01Fix" tilewidth="60" tileheight="60" tilecount="100" columns="10">
   <image source="../images/foresttiles01Fix.png" width="600" height="600"/>
  </tileset>
@@ -2773,20 +2773,20 @@
   </data>
  </layer>
  <objectgroup id="2" name="Interactables">
-  <object id="1" gid="101" x="1976.67" y="1294" width="67" height="98"/>
-  <object id="2" gid="101" x="1976.67" y="1354" width="67" height="98"/>
-  <object id="3" gid="101" x="1976.67" y="1414" width="67" height="98"/>
-  <object id="4" gid="101" x="2400" y="1380" width="67" height="98"/>
-  <object id="5" gid="101" x="2400" y="1320" width="67" height="98"/>
-  <object id="6" gid="101" x="2400" y="1260" width="67" height="98"/>
-  <object id="7" gid="101" x="2400" y="1200" width="67" height="98"/>
-  <object id="8" gid="101" x="2400" y="1140" width="67" height="98"/>
   <object id="35" gid="129" x="2922.73" y="965.152" width="100" height="100">
    <properties>
     <property name="direction" value="left"/>
     <property name="level" value="endGame"/>
    </properties>
   </object>
+  <object id="36" gid="101" x="2395.15" y="1352.73" width="67" height="98"/>
+  <object id="37" gid="101" x="2395.15" y="1292.73" width="67" height="98"/>
+  <object id="38" gid="101" x="2395.15" y="1172.73" width="67" height="98"/>
+  <object id="39" gid="101" x="2395.15" y="1232.73" width="67" height="98"/>
+  <object id="40" gid="101" x="2395.15" y="1112.73" width="67" height="98"/>
+  <object id="41" gid="101" x="1975.76" y="1412.73" width="67" height="98"/>
+  <object id="42" gid="101" x="1975.76" y="1352.73" width="67" height="98"/>
+  <object id="43" gid="101" x="1975.76" y="1292.73" width="67" height="98"/>
  </objectgroup>
  <layer id="1" name="Colision" width="50" height="24">
   <properties>

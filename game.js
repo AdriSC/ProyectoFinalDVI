@@ -13,6 +13,19 @@ var Q = window.Q = Quintus()
 	       .touch();     
 var acumulador2 = 0;
 
+document.addEventListener('keydown', keyDownHandler, false);
+document.addEventListener('keyup', keyUpHandler, false);
+
+var reset = false;
+
+function keyDownHandler(event) {
+    if(event.keyCode == 82) reset = true; // R
+}
+
+function keyUpHandler(event) {
+    if(event.keyCode == 82) reset = false; // R
+}
+
 	//Sprite personaje principal
 	Q.Sprite.extend("SuperMeatBoy",{
         
@@ -122,6 +135,12 @@ var acumulador2 = 0;
 			}	
 
 			Q.state.set("timer", dt);
+
+			if (reset){
+				this.destroy();
+				Q.stageScene(Q.stage(1).scene.name, 1);
+				Q.stageScene("timer", 2);
+			}
 
         },
 
