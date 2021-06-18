@@ -5176,7 +5176,7 @@
   <properties>
    <property name="sensor" value="true"/>
   </properties>
-  <object id="46" gid="651" x="702" y="564" width="100" height="100">
+  <object id="46" gid="651" x="700" y="544" width="100" height="100">
    <properties>
     <property name="direction" value="left"/>
     <property name="frame" value="0"/>

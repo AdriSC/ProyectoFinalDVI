@@ -2668,7 +2668,7 @@
   </data>
  </layer>
  <objectgroup id="8" name="interactable">
-  <object id="26" gid="551" x="642" y="320" width="100" height="100">
+  <object id="26" gid="551" x="640" y="304" width="100" height="100">
    <properties>
     <property name="direction" value="right"/>
     <property name="level" value="level4"/>

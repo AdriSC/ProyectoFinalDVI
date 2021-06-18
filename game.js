@@ -224,12 +224,14 @@ var Q = window.Q = Quintus()
 	Q.Sprite.extend("Goal",{
 		init: function(p){
 			this._super(p, {
-				 sheet: "utilities",
+				 sheet: "goalAnim",
+				 sprite: "goalAnim",
 				 frame: 55,
 				 x: 350,
 				 y:900,
 				 scale: 1,
-				 sensor: true
+				 sensor: true,
+				 direction: "right"
 			 });
 			this.add("animation")
 			this.on('sensor', this, 'hit');
@@ -532,7 +534,7 @@ var Q = window.Q = Quintus()
 		    "portada.png", "bg_base.png", "foresttiles01.png", "foresttiles01Fix.png", //sprites
 		    "forestall.png", "forestdarkall.png", "foresttiles01bg.png",  "goal.png",//sprites
 		    "forestsetObj.png", "utilities.png", "end.png", "sand.png", "sawGenerator.png", "sawDesAnim.png", "sierra_negra.png", //sprites
-		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json" "goal.json",], function() {
+		    "modTiles1.json", "modTiles2.json","modTilesObj.json", "utilities.json", "sand.json", "sawGenerator.json","sawDesAnim.json", "goal.json",], function() {
 		
 		// Or from a .json asset that defines sprite locations
 		Q.compileSheets("smb_anim.png", "smb_anim.json");
